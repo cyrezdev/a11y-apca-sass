@@ -93,31 +93,31 @@ Get accessible color with default parameters:
 @use "a11y-apca-sass/a11y-apca";
 
 body {
-  --background-color: #181818;
+  --background-color: #f5f5f5;
   font-size: 16px;
   font-weight: 400;
-  color: a11y-color(#f3f3f3, var(--background-color));
+  color: a11y-color(#111111, var(--background-color));
   background-color: var(--background-color);
 }
 ```
 
-Get accessible background color to be used with text color:
+Get accessible background color to be used with text color with background color not set (will use text-color to get bg-color):
 ```
 header {
-  --text-color: #181818;
+  --text-color: #181807;
   --size: 1.125rem;
   --weight: 600;
   font-size: var(--size);
   font-weight: var(--weight);
   color: var(--text-color);
-  background-color: a11y-color(#f3f3f3, var(--background-color), ("size": var(--size), "weight": var(--weight), "edit": "bg");
+  background-color: a11y-color(var(--text-color), "", ("size": var(--size), "weight": var(--weight), "edit": "bg");
 }
 ```
 
 Get accessible color for a sub-fluent text:
 ```
 footer {
-  --background-color: #222222;
+  --background-color: #111;
   --size: 14px;
   font-size: var(--size);
   font-weight: 400;
