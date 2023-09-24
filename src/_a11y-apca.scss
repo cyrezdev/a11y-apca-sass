@@ -1,0 +1,1375 @@
+// -----------------------
+// A11y APCA Sass Library
+// -----------------------
+// Sass tools library to generate colors with APCA™ color contrast algorithm.
+// https://github.com/cyrezdev/a11y-apca-sass
+//
+// @author     Cyril Reze {@link https://github.com/cyrezdev}
+// @copyright  Cyril Reze / The Breezy Project, 2023
+// @license    Licensed under MIT {@link https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE}
+//
+// @version    0.1.0
+// -----------------------
+
+// -----------------------
+// About APCA™ by Myndex Perception Research. {@link https://git.apcacontrast.com/}
+// -----------------------
+// APCA™ is the Accessible Perceptual Contrast Algorithm,
+// a new way to predict contrast for text and non-text content
+// on self illuminated displays.
+// 
+// APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
+//
+// APCA™ is a contrast assessment method for predicting the perceived contrast between sRGB colors
+// on a computer monitor. It has been developed as an assessment method for W3 Silver/WCAG3
+// accessibility standards relating to content for computer displays and mobile devices,
+// with a focus on readability and understandability.
+//
+// WCAG 3 is still in development and subject to changes prior to adoption.
+//
+// CURRENT BASE ALGORITHM:
+//   APCA Contrast Prediction Equation 0.0.98G-4g-base-W3
+//   https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#latex-of-the-apca-w3-base-formula
+//   APCA Copyright (c) 2019-2023 by Myndex Perception Research and Andrew Somers. All Rights Reserved.
+//   License: https://github.com/Myndex/apca-w3/blob/master/LICENSE.md
+//
+// DISCLAIMER:
+//  “APCA is a method for predicting text contrast on self-illuminated displays for web-based content.
+//   Some use-cases are prohibited by license, including the following: use in medical, clinical evaluation,
+//   human safety related, aerospace, transportation, automotive, military applications, are strictly
+//   prohibited without a specific license in writing granting such use.”
+// -----------------------
+
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+
+// -----------------------
+// LEXICON
+// -----------------------
+// bg:      Background
+// fg:      Foreground
+// Lc:      Lc contrast value [-108,106]
+// level:   Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+// Lnp:     Absolute (non-polar) Lc value $L^C_{np}$
+// size:    Size of the font in px used without unit.
+//          The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.
+//          For other font-family: @see https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#size-weight
+// weight:  Weight of the font.
+//          The reference fonts are Helvetica or Arial.
+//          For other font-family: @see https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#ii---weight
+// -----------------------
+
+// -----------------------
+// BETA STATUS INFORMATION about a11y-apca-sass Library
+// -----------------------
+// - APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
+// - This Sass library a11y-apca-sass is in beta for the same reason:
+//     still in development and subject to changes prior to adoption.
+// - The code of the a11y-apca-sass could be simplified (some lines are not needed or redundant).
+//   This is wanted, to keep the current development clear, detailled and
+//   easier to stay up-to-date when changes are required or things should be adjusted.
+//   All use cases are to be displayed in Beta process, even if step or code with no effect.
+//   When we will reach a version 1.0.0 ready for standards in production, we will lighter the code.
+// -----------------------
+
+
+// -----------------------
+// a11y-apca-sass Library
+// -----------------------
+
+// List Levels and Use Cases
+$levels: "bronze", "silver", "gold";
+$content-types: "small-body-text", "body-text", "fluent-text", "large-text", "sub-fluent-text", "spot", "non-text";
+$supported-font-units: "px", "rem", "em", "";
+$fluent-contents: "small-body-text", "body-text", "fluent-text", "large-text";
+$sub-fluent-contents: "sub-fluent-text";
+$non-fluent-contents: "spot", "non-text";
+
+// Fallback for a11y map (default values)
+$fallback-a11y-map: (
+	"level": "silver",
+	"content": "body-text",
+	"size": 16px,
+	"weight": 400,
+	"edit": "fg",
+	"adjust": 0
+);
+
+
+// A11Y Color
+//
+// Generates an accessible color automatically.
+//
+// Calculate the accessible color relative to another color, accessibility level ("bronze", "silver", "gold"),
+// use case ("small-body-text", "body-text", "fluent-text", "large-text", "sub-fluent-text", "spot", "non-text"),
+// text font size and weight, using the APCA contrast algorithm.
+//
+// Set at least one color (foreground or background).
+// Set specific parameters when different from default $fallback-a11y-map:
+//   - ("level": "silver", "content": "body-text", "size": 16px, "weight": 400, "edit": "fg", "adjust": 0)
+//
+// Available parameters (<key>: <value>) for $params-map:
+//   - "level":    {string}  Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+//   - "content":  {string}  The type of content: small-body-text, body-text, fluent-text, large-text, sub-fluent-text, spot, non-text.
+//   - "edit":     {string}  "fg" if color to be edited is Text / Icon color (foreground).
+//                           "bg" if color to be edited is background color.
+//   - "size":     {number}  Size of the font in rem, em, px (preferred) or unitless (supposed px).
+//                           Warning: 'rem' and 'em' suppose the parent font-size to be 16px (the browser’s default root font-size is typically 16px).
+//   - "weight":   {number}  Weight (or boldness) of the font.
+//                           The weights available depend on the font-family that is currently set.
+//                           Accepts: Numeric values [1,1000]
+//   - "adjust":   {number}  Positive value to increase lightness contrast.
+//                           If it exceed limits defined by the a11y level, it will be auto-adjusted.
+//
+// @param    {color}   $fg-color    The color for text / icon (foreground)
+// @param    {color}   $bg-color    The background color.
+// @param    {map}     $params-map  Map list of parameters key/value to pass to the function.
+//
+// @return   {color}   The accessible color for the foreground (Text / Icon) on the background color
+//                     OR the accessible color for the background relative to the foreground color.
+//
+@function a11y-color($fg-color: $bg-color, $bg-color: $fg-color, $params-map: $fallback-a11y-map) {
+	@if meta.type-of($fg-color) != "color" {
+		$fg-color: $bg-color;
+	}
+	@if meta.type-of($bg-color) != "color" {
+		$bg-color: $fg-color;
+	}
+	@if (meta.type-of($fg-color) != "color" or meta.type-of($bg-color) != "color") {
+		@error "Type Error: a11y-color() expects at least one color for $fg-color or $bg-color but received '#{meta.type-of($fg-color)}' and '#{meta.type-of($bg-color)}'. Please provide a valid color.";
+	}
+
+	// Validate a11y map.
+	$a11y-map: set-a11y-map($params-map);
+
+	// Get Lnp contrast for the selected accessibility level (content type, font-size, font-weight, background color, custom adjustment).
+	$lnp-contrast: a11y-lnp(
+		map.get($a11y-map, "level"),
+		map.get($a11y-map, "content"),
+		map.get($a11y-map, "size"),
+		map.get($a11y-map, "weight"),
+		$bg-color,
+		map.get($a11y-map, "adjust")
+	);
+
+	@return apca-color($fg-color, $lnp-contrast, $bg-color, map.get($a11y-map, "edit"));
+}
+
+// Set A11y Map
+//
+// Validate the list of specific parameters and merge with default $fallback-a11y-map.
+//
+// @param    {map}  $map  Map list of parameters key/value.
+//
+// @return   {map}  Sanitized Map list of parameters.
+//
+@function set-a11y-map($map) {
+	$a11y-map: $fallback-a11y-map;
+
+	@if map-has-key($map, "level") and not list.index($levels, map.get($map, "level")) {
+		@warn "Parameter \"level\": [#{map.get($map, 'level')}] is not supported.";
+		$map: map.remove($map, "level");
+	}
+	@if map-has-key($map, "content") and not list.index($content-types, map.get($map, "content")) {
+		@warn "Parameter \"content\": [#{map.get($map, 'content')}] is not supported.";
+		$map: map.remove($map, "content");
+	}
+	@if map-has-key($map, "size") and meta.type-of(map.get($map, "size")) != "number" {
+		@warn "Parameter \"size\": '#{map.get($map, 'size')}' is not a number (important: do not quote the size param value. eg. use 16px, not '16px' nor \"16px\"). Font size requires a valid CSS length.";
+		$map: map.remove($map, "size");
+	}
+	@if map-has-key($map, "size") and meta.type-of(map.get($map, "size")) == "number" {
+		@if not list.index($supported-font-units, math.unit(map.get($map, "size"))) {
+			@warn "Parameter \"size\": Unit [<#{math.unit(map.get($map, 'size'))}>] for font size is not supported.";
+			$map: map.remove($map, "size");
+		}
+	}
+	@if map-has-key($map, "weight") and meta.type-of(map.get($map, "weight")) != "number" {
+		@warn "Parameter \"weight\": '#{map.get($map, 'weight')}' is not a number (important: do not quote the weight param value. eg. use 700, not '700' nor \"700\"). Font-weight requires numeric value [1,1000].";
+		$map: map.remove($map, "weight");
+	}
+	@if map-has-key($map, "edit") and not list.index(("fg", "bg"), map.get($map, "edit")) {
+		@warn "Parameter \"edit\": [#{map.get($map, 'edit')}] is not supported. Requires 'fg' or 'bg'.";
+		$map: map.remove($map, "edit");
+	}
+	@if map-has-key($map, "adjust") and meta.type-of(map.get($map, "adjust")) != "number" {
+		@warn "Parameter \"adjust\": [#{map.get($map, 'adjust')}] is not a number. Lc adjustment requires a numeric value.";
+		$map: map.remove($map, "adjust");
+	}
+
+	@return map.merge($a11y-map, $map);
+}
+
+// Get Lnp (Lc in non-polar mode)
+//
+// Method to get the absolute Lc contrast value relatively to the standards of the selected accessibility level.
+//
+// @param    {string}  $level            Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+// @param    {string}  $content          The type of content: small-body-text, body-text, fluent-text, large-text, sub-fluent-text, spot, non-text.
+// @param    {number}  $size             Size of the font in px used without unit.
+// @param    {number}  $weight           Weight (or boldness) of the font. The weights available depend on the font-family that is currently set.
+//                                       Accepts:
+//                                         - Numeric values [1,1000]
+//                                         - Keywords: @TODO
+// @param    {number}  $adjust-contrast  Positive or negative value to increase or reduce lightness contrast.
+//                                       If it exceed limits defined by the a11y level, it will be auto-adjusted.
+// @param    {color}   $bg-color         The background color. Used to define the max contrast on dark or light background.
+//
+// @return   {number}  The absolute Lc contrast value relatively to the level selected, the content type, the text font size and weight.
+//                     Adjustements:
+//                       - Set max absolute Lc value for dark backgrounds
+//                       - Custom contrast adjustment is applied (-/+) but can't exceed limits defined by the a11y level.
+//
+@function a11y-lnp($level: "silver", $content: "body-text", $size: 16, $weight: 400, $bg-color: "", $adjust-contrast: 0) {
+	@if (meta.type-of($bg-color) != "color") {
+		@error "Type Error: get-lc() expects a color for $bg-color but received #{meta.type-of($bg-color)}. Please provide a valid color.";
+	}
+
+	// START - Initialize variables
+
+	// Default preferred absolute Lc contrast (Lnp)
+	$lnp: 90;
+
+	// Default contrast adjustments
+	$body-text-add: 0;
+	$adjust: 0;
+	$max-reduce: 0;
+
+	// Set contrast adjustements values per level and use case.
+	@if $level == "silver" {
+		// Max reduce contrast per use case.
+		@if list.index($fluent-contents, $content) {
+			$max-reduce: 0;
+		} @else if list.index($sub-fluent-contents, $content) {
+			$max-reduce: 15;
+		} @else if list.index($non-fluent-contents, $content) {
+			$max-reduce: 30; // Use ARC APCA (or APCA-W3 max reduce 25) ?
+		}
+	}
+
+	@if $level == "gold" {
+		// When used for body text, any contrast value less than Lnp 75 (Lc 75 / -75) must be increased by at least Lnp 15.
+		@if $content == "body-text" {
+			$body-text-add: 15; // Minimum. Use $adjust-contrast to set more (value added to the min + Lnp 15).
+		}
+
+		// Max reduce contrast per use case.
+		@if list.index($fluent-contents, $content) {
+			$max-reduce: 0;
+		} @else if list.index($sub-fluent-contents, $content) {
+			$max-reduce: 15;
+		} @else if list.index($non-fluent-contents, $content) {
+			$max-reduce: 20; // Use ARC APCA (or APCA-W3 max reduce 25) ?
+		}
+	}
+	// END - Initialize variables
+
+	// Make sure the size is valid. If the value is not unitless, EM, REM, or PX (preferred), not supported unit.
+	$size: validate-font-size($size);
+
+	// Warning if minimum font-size not respected per level and use case.
+	@if $level == "silver" {
+		// Minimum font-size 'Silver' sub-fluent-text: 10px
+		@if $size < 10 {
+			@if list.index($sub-fluent-contents, $content) or list.index($fluent-contents, $content) {
+				@warn "Text is too small for fluent and sub-fluent text. Please increase the font size.";
+			}
+		}
+		// Minimum font-size 'Silver' fluent-text: 14px
+		@else if $size < 14 and list.index($fluent-contents, $content) {
+			@warn "Text is too small for body text and primary content. Please increase the font size.";
+		}
+	} @else if $level == "gold" {
+		// Minimum font-size 'Gold' sub-fluent-text: 12px
+		@if $size < 12 {
+			@if list.index($sub-fluent-contents, $content) or list.index($fluent-contents, $content) {
+				@warn "Text is too small for fluent and sub-fluent text. Please increase the font size.";
+			}
+		}
+		// Minimum font-size 'Gold' fluent-text: 16px
+		@else if $size < 16 and list.index($fluent-contents, $content) {
+			@warn "Text is too small for body text and primary content. Please increase the font size.";
+		}
+	}
+
+	$lookup-table-levels: "silver", "gold";
+	// Get min Lnp: Bronze level.
+	@if $level == "bronze" {
+		// Max reduce contrast per use case.
+		@if $content == "body-text" {
+			@warn "body-text ---- #{$size}";
+			@if ($size >= 18) {
+				$lnp: 75;
+			} @else {
+				$lnp: 90;
+			}
+		} @else if list.index($fluent-contents, $content) and $content != "body-text" {
+			@if ($size >= 16) {
+				$lnp: 60;
+			} @else {
+				$lnp: 75;
+			}
+		} @else if list.index($sub-fluent-contents, $content) {
+			@warn "sub-fluent-text ---- #{$size}";
+			@if ($size >= 32) {
+				$lnp: 45;
+			} @else {
+				$lnp: 60;
+			}
+		} @else if list.index($non-fluent-contents, $content) {
+			$lnp: 30;
+		}
+	}
+
+	// Get min Lnp: Silver and Gold levels.
+	@else if list.index($lookup-table-levels, $level) {
+		// Get Lnp per Lookup Table Font to Contrast.
+		$lnp: font-to-contrast-table($size, $weight);
+
+		// Adjust contrast per level and use case (content type)
+		$lnp: calc($lnp - $max-reduce);
+	}
+
+	// Set the limit if value exceeds compliant value limits (reduce / increase / max).
+	@if $adjust-contrast > 0 {
+		$lnp: calc($lnp + $adjust-contrast);
+		// Set a max Lnp 100 for text content. To be confirmed.
+		@if $lnp > 100 {
+			$lnp: 100;
+		}
+	}
+
+	// Gold level: When used for body text, any contrast value less than Lnp 75 must be increased by at least Lnp 15.
+	@if $level == "gold" and $lnp < 75 {
+		@if $content == "body-text" {
+			$lnp: calc($lnp + 15); // Minimum. Use $adjust-contrast to set more (adjust value added to the min + Lnp 15).
+		}
+	}
+
+	// Fonts larger than 24px and weight 300 or more have a maximum contrast of Lnp 90.
+	@if $size > 24 and $weight >= 300 and $lnp > 90{
+		$lnp: 90;
+	}
+
+	// See as of Sept. 1, 2023, the maximum contrast is specified for dark mode: https://github.com/Myndex/SAPC-APCA/discussions/106
+	$bg-brightness: is-light-or-dark($bg-color);
+
+	@if $bg-brightness == "dark" {
+		@if $content == "body-text" and $lnp > 90 {
+			// Max Lc -90
+			$lnp: 90;
+		}
+
+		@else if $size > 24 and $lnp > 85 {
+			// In study
+			$lnp: 85;
+		}
+
+		@else if $size > 36 or ($size > 24 and $weight > 600) {
+			// In study
+			$ref-contrast: get-lnp(black, #333333);
+			$bg-contrast: get-lnp(black, $bg-color);
+			@if $bg-contrast < $ref-contrast and $lnp > 75 {
+				$lnp: 75;
+			} @else if $lnp > 80 {
+				$lnp: 80;
+			}
+		}
+	}
+
+	@return $lnp;
+}
+
+// APCA Font to Contrast table
+// Silver and Gold levels ONLY
+//
+// Return absolute Lc contrast (Lnp) required per Font Lookup Table.
+// @see https://github.com/Myndex/apca-w3/tree/master#font-lookup-table
+//
+// @param    {number}  $size             Size of the font in px used without unit.
+// @param    {number}  $weight           Weight (or boldness) of the font. The weights available depend on the font-family that is currently set.
+//                                       Accepts:
+//                                         - Numeric values [1,1000]
+//                                         - Keywords: @TODO
+//
+// @return   {number}  The Lnp (Lc in non-polar mode) contrast value per Lookup Table.
+//
+@function font-to-contrast-table($size, $weight) {
+	// Make sure the size is valid. If the value is not unitless, EM, REM, or PX (preferred), not supported unit.
+	$size: validate-font-size($size);
+
+	// Default preferred absolute Lc contrast (Lnp)
+	$lnp: 90;
+
+	@if $size < 10 {
+		@if $weight < 400 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 400 and $weight < 800 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 100; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	@if $size >= 10 and $size < 12 {
+		@if $weight < 400 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 400 and $weight < 800 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 100; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	@if $size >= 12 and $size < 14 {
+		@if $weight < 400 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 400 and $weight < 800 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 100; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	// Note: Minimum font-size 'Silver' body-text
+	@if $size >= 14 and $size < 15 {
+		@if $weight < 300 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 300 and $weight < 400 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 100;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 100;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 90;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 75;
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 100; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	@if $size >= 15 and $size < 16 {
+		@if $weight < 300 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 300 and $weight < 400 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 100;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 90;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 75;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 70;
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 70; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	// Note: Minimum font-size 'Gold' body-text
+	@if $size >= 16 and $size < 18 {
+		@if $weight < 300 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 300 and $weight < 400 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 90;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 75;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 70;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 60;
+		} @else if $weight >= 800 and $weight < 900 {
+			$lnp: 60; // Not for block/body-text.
+		} @else {
+			@warn "Text is too bold. Please decrease the font weight.";
+			$lnp: 60; // Prohibited except for decorative purposes.
+			// Note: This is (should be!) decorative.
+		}
+	}
+
+	@if $size >= 18 and $size < 21 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 100;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 75;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 70;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 60;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 55;
+		} @else if $weight >= 800 {
+			$lnp: 55; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 21 and $size < 24 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 100;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 75;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 70;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 60;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 55;
+		} @else if $weight >= 800 {
+			$lnp: 55; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 24 and $size < 28 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			@warn "Placeholder/Disabled/Copyright ONLY";
+			$lnp: 100; // Placeholder/Disabled/Copyright ONLY
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 75;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 60;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 55;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 50;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 45;
+		} @else if $weight >= 800 {
+			$lnp: 45; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 28 and $size < 32 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 100;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 70;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 55;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 50;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 45;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 43;
+		} @else if $weight >= 800 {
+			$lnp: 43; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 32 and $size < 36 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 90;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 65;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 50;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 45;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 43;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 40;
+		} @else if $weight >= 800 {
+			@warn "Not for block/body-text";
+			$lnp: 40; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 36 and $size < 42 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			// Prohibited except for decorative purposes.
+			// Note: Fallback to default preferred Lnp. This is (should be!) decorative.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 75;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 60;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 45;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 43;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 40;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 38;
+		} @else if $weight >= 800 {
+			@warn "Not for block/body-text";
+			$lnp: 38; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 42 and $size < 48 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			$lnp: 100; // Weight 100 fonts should be avoided.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 70;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 55;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 43;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 40;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 38;
+		} @else if $weight >= 700 and $weight < 800 {
+			$lnp: 35;
+		} @else if $weight >= 800 {
+			@warn "Not for block/body-text";
+			$lnp: 35; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 48 and $size < 60 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			$lnp: 90; // Weight 100 fonts should be avoided.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 60;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 50;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 40;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 38;
+		} @else if $weight >= 600 and $weight < 700 {
+			$lnp: 35;
+		} @else if $weight >= 700 {
+			@warn "Not for block/body-text";
+			$lnp: 33; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 60 and $size < 72 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			$lnp: 75; // Weight 100 fonts should be avoided.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 55;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 45;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 38;
+		} @else if $weight >= 500 and $weight < 600 {
+			$lnp: 35;
+		} @else if $weight >= 600 and $weight < 700 {
+			@warn "Not for block/body-text";
+			$lnp: 33; // Not for block/body-text.
+		} @else if $weight >= 700 {
+			@warn "Not for block/body-text";
+			$lnp: 30; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 72 and $size < 96 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			$lnp: 60; // Weight 100 fonts should be avoided.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 50;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 40;
+		} @else if $weight >= 400 and $weight < 500 {
+			$lnp: 35;
+		} @else if $weight >= 500 and $weight < 600 {
+			@warn "Not for block/body-text";
+			$lnp: 33; // Not for block/body-text.
+		} @else if $weight >= 600 {
+			@warn "Not for block/body-text";
+			$lnp: 30; // Not for block/body-text.
+		}
+	}
+
+	@if $size >= 96 {
+		@if $weight < 200 {
+			@warn "Text is too thin. Please increase the font size and/or weight.";
+			$lnp: 50; // Weight 100 fonts should be avoided.
+		} @else if $weight >= 200 and $weight < 300 {
+			$lnp: 45;
+		} @else if $weight >= 300 and $weight < 400 {
+			$lnp: 35;
+		} @else if $weight >= 400 and $weight < 500 {
+			@warn "Not for block/body-text";
+			$lnp: 33; // Not for block/body-text.
+		} @else if $weight >= 500 {
+			@warn "Not for block/body-text";
+			$lnp: 30; // Not for block/body-text.
+		}
+	}
+
+	@return $lnp;
+}
+
+// Validate font size
+//
+// Depending on the unit, recalculate a font size value into pixels if possible.
+//
+// @param    {string}  $size  Font size to remove unit from and convert to a unitless px value.
+//
+// @return   {Number}  Unitless font size (px value)
+//
+@function validate-font-size($size) {
+	@if list.index($supported-font-units, math.unit($size)) {
+
+		// Check if a flexible unit
+		@if math.unit($size) == "rem" or math.unit($size) == "em" {
+			// Need to convert to a pixel value. Let's not overcomplicate it with possible 'em' inheritence scale factors.
+			@return strip-unit($size * 16);
+		}
+
+		@if math.unit($size) == "px" {
+			// We expect 'px', so strip the value and return it
+			@return strip-unit($size);
+		}
+
+		@if math.unit($size) == "" {
+			@return $size;
+		}
+	}
+
+	@else {
+		@error 'Unit Error: validate-font-size() - An unexpected font size unit was supplied.';
+	}
+}
+
+// Strip unit
+//
+// Remove the unit of a length.
+//
+// @param    {number}  $number  Number to remove unit from.
+//
+// @return   {number}  Unitless number
+//
+@function strip-unit($number) {
+	@if meta.type-of($number)=='number' and not math.is-unitless($number) {
+		@return math.div($number, $number * 0 + 1);
+	}
+
+	@return $number;
+}
+
+// APCA Color
+//
+// Calculate the accessible color relative to another color, using the APCA contrast algorithm.
+//
+// @param    {color}   $fg-color  Text / icon color (foreground)
+// @param    {number}  $contrast  The absolute value of the Lc lightness contrast (Lnp)
+// @param    {color}   $bg-color  Background color
+// @param    {string}  $edit      "fg" if color to be edited is Text / Icon color (foreground)
+//                                "bg" if color to be edited is background color
+//
+// @return   {color}   The accessible color for the foreground (Text / Icon) on the background color
+//                     OR the accessible color for the background relative to the foreground color.
+//
+@function apca-color($fg-color, $contrast: 90, $bg-color: $fg-color, $edit: "fg") {
+	$original-contrast: get-lnp($fg-color, $bg-color);
+	$fg-color-brightness: is-light-or-dark($fg-color);
+	$bg-color-brightness: is-light-or-dark($bg-color);
+
+	// Default color to edit: foreground color.
+	$color: $fg-color;
+
+	// Set a "step" value to lighten/darken a color
+	$step: 1%;
+
+	// *****************************
+	// Foreground Color to be edited
+	// *****************************
+	@if $edit == "fg" {
+
+		// First we need to compare the contrast of the background color (fixed color) with white text and black text.
+		// This is to know if it is possible to lighten or darken the foreground (text / icon) color,
+		// in order to obtain the desired Lc contrast value for the selected background color.
+		$light-contrast: get-lnp(black, $bg-color);
+		$dark-contrast: get-lnp(white, $bg-color);
+
+		$fallback-color: null;
+		$max-contrast: null;
+		$warning: null;
+
+		// Get the best contrast possible with selected background color.
+		@if ($light-contrast > $dark-contrast) {
+			// This is a 'Light Theme'.
+			$fallback-color: black; // text color
+			$max-contrast: $light-contrast;
+			$warning: "not light enough"; // background color
+		}
+
+		@else {
+			// This is a 'Dark Theme'.
+			$fallback-color: white; // text color
+			$max-contrast: $dark-contrast;
+			$warning: "not dark enough"; // background color
+		}
+
+		@if ($max-contrast < $contrast) {
+			@warn "Background color #{$bg-color} is #{$warning}. #{$fallback-color} is returned as color for the foreground (text / icon), but it does not conform to the desired Lc contrast value.";
+
+			// We stop here the function, and return the fallback color.
+			// That means we didn't get a compliant contrast for the Lc value.
+			@return $fallback-color;
+		}
+
+		// When here, all is good! :D
+		// We can adjust the foreground color to obtain the desired Lc contrast value.
+
+		// Color to edit: foreground $fg-color.
+		$color: $fg-color;
+
+		// Fixed color: background $bg-color.
+		$fixed-color: $bg-color;
+
+		@if $original-contrast > $contrast {
+			// Current contrast higher than expected contrast: reduce contrast.
+
+			// Run through some cases where we need to lighten (default step value), or darken (use a negative step value).
+			@if $fg-color-brightness == "light" and $bg-color-brightness == "light" {
+
+				// Light on Light:
+				// - Darken the edited color if $fg-color (edited) is lighter than $bg-color to reduce Lc contrast.
+				// - Else: Lighten the edited color if $fg-color (edited) is darker than $bg-color to reduce Lc contrast.
+				@if (get-lnp($color, white)) < get-lnp(white, $fixed-color) {
+					$step: - $step;
+				}
+
+				@else {
+					$step: $step;
+				}
+			}
+
+			@else if $fg-color-brightness == "light" and $bg-color-brightness == "dark" {
+				// Light on Dark: Darken $fg-color (edited) to reduce Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "light" {
+				// Dark on Light: Lighten $fg-color (edited) to reduce Lc contrast.
+				$step: $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "dark" {
+
+				// Dark on Dark:
+				// - Lighten the color if $fg-color (edited) is darker than $bg-color to reduce Lc contrast.
+				// - Else: Darken the color if $fg-color (edited) is lighter than $bg-color to reduce Lc contrast.
+				@if get-lnp($color, black) < get-lnp(black, $fixed-color) {
+					$step: $step;
+				}
+
+				@else {
+					$step: - $step;
+				}
+			}
+
+			// Loop through with a @while statement until the color combination passes our required lightness contrast Lc.
+			// Scale the color by our step value until the expression is false.
+			// This might loop 100 times depending on the colors
+			//
+			$previous-color: $color;
+
+			// Loop 1
+			@while get-lnp($color, $fixed-color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($color, $fixed-color) < $contrast {
+				$color: $previous-color;
+			}
+
+			// Loop 2
+			$step: calc($step / 10);
+
+			@while get-lnp($color, $fixed-color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($color, $fixed-color) < $contrast {
+				$color: $previous-color;
+			}
+
+			// Loop 3
+			$step: calc($step / 10);
+
+			@while get-lnp($color, $fixed-color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($color, $fixed-color) < $contrast {
+				$color: $previous-color;
+			}
+
+			@return $color;
+		}
+
+		@else {
+			// Current contrast lower than expected contrast: increase Lc contrast.
+
+			// Run through some cases where we need to lighten (default step value), or darken (use a negative step value).
+			@if $fg-color-brightness == "light" and $bg-color-brightness == "light" {
+				// Light on Light: Always darken the edited color to increase Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness == "light" and $bg-color-brightness == "dark" {
+				// Light on Dark: Lighten $fg-color (edited) to increase Lc contrast.
+				$step: $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "light" {
+				// Dark on Light: Darken $fg-color (edited) to increase Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "dark" {
+				// Dark on Dark: Always lighten the edited color to increase Lc contrast.
+				$step: $step;
+			}
+
+			// Loop 1
+			@while get-lnp($color, $fixed-color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			// Loop 2
+			$step: calc($step / 10);
+
+			@while get-lnp($color, $fixed-color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			// Loop 3
+			$step: calc($step / 10);
+
+			@while get-lnp($color, $fixed-color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@return $color;
+		}
+
+		// *****************************
+		// Background Color to be edited
+		// *****************************
+	}
+
+	@else if $edit == "bg" {
+
+		// First we need to compare the contrast of the text color (fixed color) with the white and black backgrounds.
+		// This is to know if it is possible to lighten or darken the background color,
+		// in order to obtain the desired Lc contrast value for the selected foreground (text / icon) color.
+		$light-contrast: get-lnp($fg-color, white);
+		$dark-contrast: get-lnp($fg-color, black);
+
+		$fallback-bg-color: null;
+		$max-contrast: null;
+		$warning: null;
+
+		// Get the best contrast possible with selected foreground (text / icon) color.
+		@if ($light-contrast > $dark-contrast) {
+			// This is a 'Light Theme'.
+			$fallback-bg-color: white; // background color
+			$max-contrast: $light-contrast;
+			$warning: "not dark enough"; // text color
+		}
+
+		@else {
+			// This is a 'Dark Theme'.
+			$fallback-bg-color: black; // background color
+			$max-contrast: $dark-contrast;
+			$warning: "not light enough"; // text color
+		}
+
+		@if ($max-contrast < $contrast) {
+			@warn "Foreground (text / icon) color #{$fg-color} is #{$warning}. #{$fallback-bg-color} is returned as color for the background, but it does not conform to the desired Lc contrast value.";
+
+			// We stop here the function, and return the fallback background color.
+			// That means we didn't get a compliant contrast for the Lc value.
+			@return $fallback-bg-color;
+		}
+
+		// When here, all is good! :D
+		// We can adjust the background color to obtain the desired Lc contrast value.
+
+		// Color to edit: background $bg-color.
+		$color: $bg-color;
+
+		// Fixed color: foreground $fg-color.
+		$fixed-color: $fg-color;
+
+		@if $original-contrast > $contrast {
+			// Current contrast higher than expected contrast: reduce contrast.
+
+			// Run through some cases where we need to lighten (default step value), or darken (use a negative step value).
+			@if $fg-color-brightness == "light" and $bg-color-brightness == "light" {
+
+				// Light on Light:
+				// - Lighten the edited color if $fg-color is lighter than $bg-color (edited) to reduce Lc contrast.
+				// - Else: Darken the edited color if $fg-color is darker than $bg-color (edited) to reduce Lc contrast.
+				@if (get-lnp($fixed-color, white)) < get-lnp(white, $color) {
+					$step: $step;
+				}
+
+				@else {
+					$step: - $step;
+				}
+			}
+
+			@else if $fg-color-brightness == "light" and $bg-color-brightness == "dark" {
+				// Light on Dark: Lighten $bg-color (edited) to reduce Lc contrast.
+				$step: $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "light" {
+				// Dark on Light: Darken $bg-color (edited) to reduce Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness == "dark" and $bg-color-brightness == "dark" {
+
+				// Dark on Dark:
+				// - Darken the edited color if $fg-color is darker than $bg-color (edited) to reduce Lc contrast.
+				// - Else: Lighten the edited color if $fg-color is lighter than $bg-color (edited) to reduce Lc contrast.
+				@if (get-lnp($fixed-color, black)) < get-lnp(black, $color) {
+					$step: - $step;
+				}
+
+				@else {
+					$step: $step;
+				}
+			}
+
+			// Loop through with a @while statement until the color combination passes our required lightness contrast Lc.
+			// Scale the color by our step value until the expression is false.
+			// This might loop 100 times depending on the colors
+			//
+			$previous-color: $color;
+
+			// Loop 1
+			@while get-lnp($fixed-color, $color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($fixed-color, $color) < $contrast {
+				$color: $previous-color;
+			}
+
+			// Loop 2
+			$step: calc($step / 10);
+
+			@while get-lnp($fixed-color, $color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($fixed-color, $color) < $contrast {
+				$color: $previous-color;
+			}
+
+			// Loop 3
+			$step: calc($step / 10);
+
+			@while get-lnp($fixed-color, $color) > $contrast {
+				$previous-color: $color;
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@if get-lnp($fixed-color, $color) < $contrast {
+				$color: $previous-color;
+			}
+
+			@return $color;
+
+		}
+
+		@else {
+
+			// Run through some cases where we need to lighten (default step value), or darken (use a negative step value).
+			@if $fg-color-brightness =='light' and $bg-color-brightness =='light' {
+				// Light on Light: Always darken the edited color to increase Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness =='light' and $bg-color-brightness =='dark' {
+				// Light on Dark: Darken $bg-color (edited) to increase Lc contrast.
+				$step: - $step;
+			}
+
+			@else if $fg-color-brightness =='dark' and $bg-color-brightness =='light' {
+				// Dark on Light: Lighten $bg-color (edited) to increase Lc contrast.
+				$step: $step;
+			}
+
+			@else if $fg-color-brightness =='dark' and $bg-color-brightness =='dark' {
+				// Dark on Dark: Always lighten the edited color to increase Lc contrast.
+				$step: $step;
+			}
+
+			// Loop 1
+			@while get-lnp($fixed-color, $color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			// Loop 2
+			$step: calc($step / 10);
+
+			@while get-lnp($fixed-color, $color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			// Loop 3
+			$step: calc($step / 10);
+
+			@while get-lnp($fixed-color, $color) < $contrast {
+				$color: scale-color($color, $lightness: $step);
+			}
+
+			@return $color;
+		}
+	}
+
+	@else {
+		@error "Color to be ajusted from $edit is not defined or not correct. Should be 'fg' (foreground) OR 'bg' (background).";
+		@return $color;
+	}
+}
+
+// Is Light or Dark Helper
+//
+// Determine if a color brightness is "light" or "dark" by checking lightness contrast against white or black.
+//
+// @param    {color}   $color  Color to be checked
+//
+// @return   {string}  "light" or "dark" relatively of the brightness of the color.
+//
+@function is-light-or-dark($color) {
+	$light-contrast: get-lnp($color, white);
+	$dark-contrast: get-lnp($color, black);
+
+	@if $light-contrast >$dark-contrast {
+		// Contrast against white is higher than against black, so, this is a dark color.
+		@return "dark";
+	}
+
+	@else {
+		@return "light";
+	}
+}
+
+// Absolute Lightness Contrast Helper
+//
+// Shortcut function to get Lnp, the non-polar value of Lc (lightness contrast).
+//
+// @param    {color}   $fg-color  Text / icon color (foreground)
+// @param    {color}   $bg-color  Background color
+//
+// @return   {number}  Lnp, the non-polar value of the lightness contrast (Lc).
+//
+@function get-lnp($fg-color, $bg-color) {
+	@return math.abs(apca-contrast($fg-color, $bg-color));
+}
+
+
+// -----------------------
+// APCA-W3 SASS
+// -----------------------
+// Implementation of the [Accessible Perceptual Contrast Algorithm (APCA)](https://git.apcacontrast.com/) for the WCAG 3.0 specification.
+//
+// Based on sass-apca by Philipp Gfeller: https://github.com/gfellerph/sass-apca
+// Updated with APCA-W3 (by Myndex) variable names: https://github.com/Myndex/apca-w3/blob/master/src/apca-w3.js
+// Adapted by Cyril Reze for a11y-apca-sass: https://github.com/cyrezdev/a11y-apca-sass
+//
+// APCA 0.0.98G - 4g - W3 Compatible Constants
+// -----------------------
+
+// 2.4 exponent for emulating actual monitor perception
+$mainTRC: 2.4;
+
+// sRGB coefficients
+$sRco: 0.2126729;
+$sGco: 0.7151522;
+$sBco: 0.0721750;
+
+// G-4g constants for use with 2.4 exponent
+$normBG: 0.56;
+$normTXT: 0.57;
+$revTXT: 0.62;
+$revBG: 0.65;
+
+// G-4g Clamps and Scalers
+$blkThrs: 0.022;
+$blkClmp: 1.414;
+$scale: 1.14; // scaleBoW & scaleWoB
+$offset: 0.027; // loBoWoffset & loWoBoffset OK
+$deltaYmin: 0.0005;
+$loClip: 0.1;
+
+// APCA Contrast
+//
+// Determine the lightness contrast of a given text and background color
+// using the APCA Contrast Algorithm
+//
+// @param    {color}   $fg-color  Text / icon color (foreground)
+// @param    {color}   $bg-color  Background color
+//
+// @return   {number}  A number between -108 and 106 representing the lightness contrast (Lc).
+//
+@function apca-contrast($fg-color, $bg-color) {
+	@if (meta.type-of($fg-color) !='color') {
+		@error "Type Error: apca-contrast() expects a color as first argument but received #{meta.type-of($fg-color)}. Please provide a valid color.";
+	}
+
+	@if (meta.type-of($bg-color) !='color') {
+		@error "Type Error: apca-contrast() expects a color as second argument but received #{meta.type-of($bg-color)}. Please provide a valid color.";
+	}
+
+	$polarity: apca-polarity($fg-color, $bg-color);
+
+	@if (math.abs($polarity) < $loClip) {
+		@return 0;
+	}
+
+	@else if ($polarity > 0) {
+		@return ($polarity - $offset) * 100;
+	}
+
+	@else {
+		@return ($polarity + $offset) * 100;
+	}
+}
+
+// APCA Polarity
+//
+// Use Y for text and BG, and soft clamp black,
+// return 0 for very close luminances, determine
+// polarity, and calculate SAPC raw contrast
+// Then scale for easy to remember levels.
+//
+// Note that reverse contrast (white text on black)
+// intentionally returns a negative number
+// Proper polarity is important!
+//
+// @param    {color}   $fg-color  Text / icon color (foreground)
+// @param    {color}   $bg-color  Background color
+//
+// @return   {number}  Positive or negative polarity of text color on background color.
+//
+@function apca-polarity($fg-color, $bg-color) {
+	$txtY: apca-soft-clamp(apca-luminance($fg-color));
+	$bgY: apca-soft-clamp(apca-luminance($bg-color));
+
+	@if ($bgY > $txtY) {
+		@return (math.pow($bgY, $normBG) - math.pow($txtY, $normTXT)) * $scale;
+	}
+
+	@else {
+		@return (math.pow($bgY, $revBG) - math.pow($txtY, $revTXT)) * $scale;
+	}
+}
+
+// APCA Soft Clamp
+//
+// Soft clamps Y (luminance) for either color if it is near black.
+//
+// @param    {number}  $luminance  Color luminance
+//
+// @return   {number}  Adjusted luminance if needed.
+//
+@function apca-soft-clamp($luminance) {
+	@if ($luminance < 0) {
+		@return 0;
+	}
+
+	@else if ($luminance < $blkThrs) {
+		@return $luminance + math.pow(($blkThrs - $luminance), $blkClmp);
+	}
+
+	@else {
+		@return $luminance;
+	}
+}
+
+// APCA Luminance
+//
+// Linearize r, g, or b then apply coefficients
+// and sum then return the resulting luminance
+//
+// @param    {color}   Color
+//
+// @return   {number}  Color luminance Y.
+//
+@function apca-luminance($color) {
+	$red: color.red($color);
+	$green: color.green($color);
+	$blue: color.blue($color);
+
+	$redY: math.pow(math.div($red, 255), $mainTRC) * $sRco;
+	$greenY: math.pow(math.div($green, 255), $mainTRC) * $sGco;
+	$blueY: math.pow(math.div($blue, 255), $mainTRC) * $sBco;
+
+	@return $redY + $greenY + $blueY;
+}
