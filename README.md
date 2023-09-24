@@ -71,7 +71,7 @@ Set use case parameters when different from default $fallback-a11y-map:
   - sub-fluent-text
   - spot
   - non-text
-- `"edit": {string}'<br>
+- `"edit": {string}`<br>
 **The color to be edited**
   - "fg" if color to be edited is Text / Icon color (foreground).<br>
   - "bg" if color to be edited is background color.
