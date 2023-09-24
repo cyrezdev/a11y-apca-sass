@@ -149,9 +149,10 @@ footer {
 ## `is-light-or-dark`
 ## `get-lnp`
 
-# Inspiration and resources
+# Acknowledgments and resources
 
 - APCA homepage: https://git.apcacontrast.com/
 - APCA calculator: https://www.myndex.com/APCA/
 - APCA-W3: https://github.com/Myndex/apca-w3
-- SASS-APCA: https://github.com/gfellerph/sass-apca
+- Implementation of APCA algorithm based on [sass-apca](https://github.com/gfellerph/sass-apca) by [Philipp Gfeller](https://github.com/gfellerph).
+- Automated Color Contrast (apca-color function) adapted from [J. Hogue](https://github.com/jhogue)’s [automated-a11y-sass](https://github.com/jhogue/automated-a11y-sass), an automated color contrast based on WCAG2
