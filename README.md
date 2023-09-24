@@ -55,7 +55,7 @@ Calculate the accessible color relative to another color, accessibility level ("
 a11y-color( <code>foreground color</code>, <code>background color</code>, <code>parameters</code> )
 
 ### Parameters
-Set at least one color (foreground or background). Use a valid Sass color (#f4f5f3, #234, white, darkblue, etc.)
+Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, white, darkblue, etc.)
 
 Set use case parameters when different from default $fallback-a11y-map:
 - `"level": {string}`: **Accessibility level as defined by APCA-W3 and WCAG 3:**
