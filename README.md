@@ -88,7 +88,7 @@ Set use case parameters when different from default $fallback-a11y-map:
 
 ### Examples
 
-Get accessible color with default parameters.
+Get accessible color with default parameters:
 ```
 @use "a11y-apca-sass/a11y-apca";
 
@@ -101,7 +101,7 @@ body {
 }
 ```
 
-Get accessible background color to be used with text color.
+Get accessible background color to be used with text color:
 ```
 header {
   --text-color: #181818;
@@ -112,7 +112,7 @@ header {
 }
 ```
 
-Get accessible color for a sub-fluent text.
+Get accessible color for a sub-fluent text:
 ```
 footer {
   --background-color: #222222;
