@@ -12,7 +12,8 @@ Sass tools library to generate colors with [APCA™](https://git.apcacontrast.co
   All use cases are to be displayed in Beta process, even if step or code with no effect.
   When we will reach a version 1.0.0 ready for standards in production, we will lighter the code.
 
-## About APCA™ by Myndex Perception Research. https://git.apcacontrast.com/
+## About APCA™ by Myndex Perception Research.
+Link: https://git.apcacontrast.com/
 - APCA™ is the Accessible Perceptual Contrast Algorithm, a new way to predict contrast for text and non-text content on self illuminated displays.
 - APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
 - APCA™ is a contrast assessment method for predicting the perceived contrast between sRGB colors on a computer monitor. It has been developed as an assessment method for W3 Silver/WCAG3 accessibility standards relating to content for computer displays and mobile devices, with a focus on readability and understandability.
