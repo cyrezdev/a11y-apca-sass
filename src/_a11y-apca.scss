@@ -300,7 +300,6 @@ $fallback-a11y-map: (
 	@if $level == "bronze" {
 		// Max reduce contrast per use case.
 		@if $content == "body-text" {
-			@warn "body-text ---- #{$size}";
 			@if ($size >= 18) {
 				$lnp: 75;
 			} @else {
@@ -313,7 +312,6 @@ $fallback-a11y-map: (
 				$lnp: 75;
 			}
 		} @else if list.index($sub-fluent-contents, $content) {
-			@warn "sub-fluent-text ---- #{$size}";
 			@if ($size >= 32) {
 				$lnp: 45;
 			} @else {
