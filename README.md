@@ -3,7 +3,7 @@
 Sass tools library to generate colors with [APCA™](https://git.apcacontrast.com/) color contrast algorithm.
 
 ## About a11y-apca-sass Library
-- APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
+- APCA™ is the candidate contrast method for WCAG 3, and is currently in [public beta](https://github.com/Myndex/apca-w3).
 - This Sass library a11y-apca-sass is in beta for the same reason:
   still in development and subject to changes prior to adoption.
 - The code of the a11y-apca-sass could be simplified (some lines are not needed or redundant).
