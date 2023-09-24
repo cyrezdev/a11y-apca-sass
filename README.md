@@ -154,5 +154,5 @@ footer {
 - APCA homepage: https://git.apcacontrast.com/
 - APCA calculator: https://www.myndex.com/APCA/
 - APCA-W3: https://github.com/Myndex/apca-w3
-- Implementation of APCA algorithm based on [sass-apca](https://github.com/gfellerph/sass-apca) by [Philipp Gfeller](https://github.com/gfellerph).
+- Implementation of APCA algorithm adapted from [sass-apca](https://github.com/gfellerph/sass-apca) by [Philipp Gfeller](https://github.com/gfellerph).
 - apca-color() function inspired by [J. Hogue](https://github.com/jhogue)’s [automated-a11y-sass](https://github.com/jhogue/automated-a11y-sass), based on WCAG2
