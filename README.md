@@ -43,7 +43,7 @@ $fallback-a11y-map: (
 );
 ```
 
-# Main Functions
+# Get Started
 
 ## `a11y-color()`
 Generates an accessible color automatically.
