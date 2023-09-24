@@ -813,6 +813,8 @@ $fallback-a11y-map: (
 //
 // Calculate the accessible color relative to another color, using the APCA contrast algorithm.
 //
+// Inspired by J. Hogue’s automated-a11y-sass, an automated color contrast based on WCAG2
+//
 // @param    {color}   $fg-color  Text / icon color (foreground)
 // @param    {number}  $contrast  The absolute value of the Lc lightness contrast (Lnp)
 // @param    {color}   $bg-color  Background color
