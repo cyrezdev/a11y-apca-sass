@@ -67,7 +67,7 @@ Set use case parameters when different from default $fallback-a11y-map:
   - small-body-text
   - body-text
   - fluent-text
-  - large-texts
+  - large-text
   - sub-fluent-text
   - spot
   - non-text
