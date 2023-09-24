@@ -128,7 +128,7 @@ footer {
 
 <hr>
 
-# APCA Functions
+# APCA based Functions
 
 ## `a11y-lnp()`
 ## `font-to-contrast-table()`
