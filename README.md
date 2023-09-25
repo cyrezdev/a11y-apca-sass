@@ -126,6 +126,8 @@ body {
 
 Get accessible background color to be used with text color and background color not set (will use text color to get bg-color):
 ```
+@use "a11y-apca-sass/a11y-apca";
+
 header {
   --text-color: #181807;
   --size: 1.125rem;
@@ -139,6 +141,8 @@ header {
 
 Get accessible color for a sub-fluent text:
 ```
+@use "a11y-apca-sass/a11y-apca";
+
 footer {
   --background-color: #111;
   --size: 14px;
