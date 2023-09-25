@@ -100,7 +100,7 @@ a11y-color(#1234b0, #e9e4d0)
 
 Simple case with some specific parameters:
 ```
-a11y-color(#1234b0, #e9e4d0, ("content": "sub-fluent-text", "size": .875rem, "weight": 500)
+a11y-color(#1234b0, #e9e4d0, ("content": "sub-fluent-text", "size": .875rem, "weight": 500))
 ```
 
 Get accessible color with default parameters:
