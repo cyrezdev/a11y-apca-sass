@@ -55,7 +55,7 @@ _Note: The returned color uses the minimum contrast per use case and level. You 
 
 ### Usage
 
-```scss
+```html
 a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
 
