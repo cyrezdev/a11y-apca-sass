@@ -95,12 +95,18 @@ Set use case parameters when different from default $fallback-a11y-map:
 
 Simple case using default parameters:
 ```
-a11y-color(#1234b0, #e9e4d0)
+a11y-color(#0000ff, #f9f9f9)
+
+// Lc contrast for #0000ff on #f9f9f9 is 82.2
+// a11y-color returns #0000c2 as foreground color with a Lc contrast of 90.2 on #f9f9f9 background color.
 ```
 
 Simple case with some specific parameters:
 ```
 a11y-color(#1234b0, #e9e4d0, ("content": "sub-fluent-text", "size": .875rem, "weight": 500))
+
+// Lc contrast for #1234b0 on #e9e4d0 is 75.6
+// a11y-color returns #0b1f69 as foreground color with a Lc contrast of 85.0 on #e9e4d0 background color.
 ```
 
 Get accessible color with default parameters:
