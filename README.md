@@ -165,8 +165,8 @@ footer {
 Get Lnp (Lc in non-polar mode)
 
 ```scss
-@function a11y-lnp($level: "silver", $content: "body-text",
-  $size: 16, $weight: 400, $bg-color: "", $adjust-contrast: 0)
+@function a11y-lnp($level: "silver", $content: "body-text", $size: 16, $weight: 400,
+  $bg-color: "", $adjust-contrast: 0)
 ```
 - Method to get the absolute Lc contrast value relatively to the standards of the selected accessibility level.
 
