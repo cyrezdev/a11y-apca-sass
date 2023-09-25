@@ -53,6 +53,7 @@ Calculate the accessible color relative to another color, accessibility level ("
 
 ### Usage
 
+`a11y-color( <foreground color>, <background color>, <parameters> )`
 a11y-color( <code>foreground color</code>, <code>background color</code>, <code>parameters</code> )
 
 ### Parameters
