@@ -188,6 +188,7 @@ APCA Soft Clamp
 
 ### `apca-luminance()`
 APCA Luminance
+
 `@function apca-luminance($color)`
 - Linearize r, g, or b then apply coefficients and sum then return the resulting luminance
 <br>
