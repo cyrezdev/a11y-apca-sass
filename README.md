@@ -59,7 +59,7 @@ _Note: The returned color uses the minimum contrast per use case and level. You 
 a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
 
-### Parameters
+### Use Case Parameters
 Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, pink, darkblue, etc.)
 
 Set use case parameters when different from default $fallback-a11y-map:
