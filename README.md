@@ -61,33 +61,34 @@ a11y-color( <foreground color>, <background color>, (<parameters map>) )
 Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, pink, darkblue, etc.)
 
 Set use case parameters when different from default $fallback-a11y-map:
-- `"level": "{string}"`: **Accessibility level as defined by APCA-W3 and WCAG 3:**
-  - Bronze (minimum)
-  - Silver
-  - Gold (higher).
-- `"content": "{string}"`<br>
-  **The type of content:**
-  - small-body-text
-  - body-text
-  - fluent-text
-  - large-text
-  - sub-fluent-text
-  - spot
-  - non-text
+- `"level": "{string}"`:
+  - **Accessibility level as defined by APCA-W3 and WCAG 3**
+    - "bronze" (minimum)
+    - "silver"
+    - "gold" (higher).
+- `"content": "{string}"`
+  - **The type of content**
+    - small-body-text
+    - body-text
+    - fluent-text
+    - large-text
+    - sub-fluent-text
+    - spot
+    - non-text
 - `"edit": "{string}"`
   - **The color to be edited**
     - "fg" if color to be edited is Text / Icon color (foreground).<br>
     - "bg" if color to be edited is background color.
-- `"size": {number}`<br>
-**Size of the font in rem, em, px (preferred) or unitless (supposed px)**
-  - Warning: 'rem' and 'em' suppose the parent font-size to be 16px (the browser’s default root font-size is typically 16px).
-- `"weight": {number}`<br>
-**Weight (or boldness) of the font.**
-  - The weights available depend on the font-family that is currently set.<br>
-  - Accepts: Numeric values [1,1000]
-- `"adjust": {number}`<br>
-**Positive value to increase lightness contrast.**
-  - If it exceed limits defined by the a11y level, it will be auto-adjusted.
+- `"size": {number}`
+  - **Size of the font in rem, em, px (preferred) or unitless (supposed px)**<br>
+    Warning: 'rem' and 'em' suppose the parent font-size to be 16px (the browser’s default root font-size is typically 16px).
+- `"weight": {number}`
+  - **Weight (or boldness) of the font.**<br>
+    The weights available depend on the font-family that is currently set.
+    - Numeric value [1,1000]
+- `"adjust": {number}`
+  - **Positive value to increase lightness contrast.**
+    If it exceed limits defined by the a11y level, it will be auto-adjusted.
 
 ### Examples
 
