@@ -62,32 +62,33 @@ Set at least one color (foreground or background). Use a valid Sass color (eg. #
 
 Set use case parameters when different from default $fallback-a11y-map:
 - `"level": "{string}"`:
-  - **Accessibility level as defined by APCA-W3 and WCAG 3**
+  - **Accessibility level as defined by APCA-W3 and WCAG 3:**
     - "bronze" (minimum)
     - "silver"
     - "gold" (higher).
 - `"content": "{string}"`
-  - **The type of content**
-    - small-body-text
-    - body-text
-    - fluent-text
-    - large-text
-    - sub-fluent-text
-    - spot
-    - non-text
+  - **The type of content:**
+    - "small-body-text"
+    - "body-text"
+    - "fluent-text"
+    - "large-text"
+    - "sub-fluent-text"
+    - "spot"
+    - "non-text"
 - `"edit": "{string}"`
-  - **The color to be edited**
+  - **The color to be edited:**
     - "fg" if color to be edited is Text / Icon color (foreground).<br>
     - "bg" if color to be edited is background color.
 - `"size": {number}`
-  - **Size of the font in rem, em, px (preferred) or unitless (supposed px)**<br>
+  - **Size of the font in rem, em, px (preferred) or unitless (supposed px).**<br>
     Warning: 'rem' and 'em' suppose the parent font-size to be 16px (the browser’s default root font-size is typically 16px).
+    - eg. 1rem, 1em, 16px, 16
 - `"weight": {number}`
   - **Weight (or boldness) of the font.**<br>
     The weights available depend on the font-family that is currently set.
     - Numeric value [1,1000]
 - `"adjust": {number}`
-  - **Positive value to increase lightness contrast.**
+  - **Positive value to increase lightness contrast.**<br>
     If it exceed limits defined by the a11y level, it will be auto-adjusted.
 
 ### Examples
