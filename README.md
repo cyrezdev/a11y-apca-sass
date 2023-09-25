@@ -93,6 +93,16 @@ Set use case parameters when different from default $fallback-a11y-map:
 
 ### Examples
 
+Simple case using default parameters:
+```
+a11y-color(#1234b0, #e9e4d0)
+```
+
+Simple case with some specific parameters:
+```
+a11y-color(#1234b0, #e9e4d0, ("content": "sub-fluent-text", "size": .875rem, "weight": 500)
+```
+
 Get accessible color with default parameters:
 ```
 @use "a11y-apca-sass/a11y-apca";
@@ -106,7 +116,7 @@ body {
 }
 ```
 
-Get accessible background color to be used with text color with background color not set (will use text-color to get bg-color):
+Get accessible background color to be used with text color and background color not set (will use text color to get bg-color):
 ```
 header {
   --text-color: #181807;
@@ -133,26 +143,76 @@ footer {
 
 <hr>
 
-# APCA based Functions
-
-## `a11y-lnp()`
-## `font-to-contrast-table()`
-## `apca-color()`
-## `apca-contrast()`
-## `apca-polarity()`
-## `apca-soft-clamp()`
-## `apca-luminance()`
-
-
-<hr>
-
 # Utility Functions
 
-## `set-a11y-map`
-## `validate-font-size`
-## `strip-unit`
-## `is-light-or-dark`
-## `get-lnp`
+## APCA based Functions
+
+### `a11y-lnp()`
+Get Lnp (Lc in non-polar mode)
+
+`@function a11y-lnp($level: "silver", $content: "body-text", $size: 16, $weight: 400, $bg-color: "", $adjust-contrast: 0)`
+- Method to get the absolute Lc contrast value relatively to the standards of the selected accessibility level.
+
+### `font-to-contrast-table()`
+APCA Font to Contrast table
+
+`@function font-to-contrast-table($size, $weight)`
+- Return absolute Lc contrast (Lnp) required per Font Lookup Table.<br>
+  @see https://github.com/Myndex/apca-w3/tree/master#font-lookup-table
+
+### `apca-color()`
+Calculate the accessible color relative to another color, using the APCA contrast algorithm.
+
+`@function apca-color($fg-color, $contrast: 90, $bg-color: $fg-color, $edit: "fg")`
+- Return the accessible color for the foreground (Text / Icon) on the background color<br>
+  OR the accessible color for the background relative to the foreground color.
+
+### `apca-contrast()`
+APCA contrast
+
+`@function apca-contrast($fg-color, $bg-color)`
+- Determine the lightness contrast of a given text and background color using the APCA Contrast Algorithm
+
+### `apca-polarity()`
+APCA Polarity
+
+`@function apca-polarity($fg-color, $bg-color)`
+- Use Y (luminance) for text and BG, and soft clamp black, return 0 for very close luminances, determine
+   polarity, and calculate SAPC raw contrast. Then scale for easy to remember levels.
+
+### `apca-soft-clamp()`
+APCA Soft Clamp
+
+`@function apca-soft-clamp($luminance)`
+- Soft clamps Y (luminance) for either color if it is near black.
+
+### `apca-luminance()`
+APCA Luminance
+`@function apca-luminance($color)`
+- Linearize r, g, or b then apply coefficients and sum then return the resulting luminance
+<br>
+
+## Helper Functions
+
+### `set-a11y-map`
+`@function set-a11y-map($map)`
+- Validate the list of specific parameters and merge with default $fallback-a11y-map.
+
+### `validate-font-size`
+`@function validate-font-size($size)`
+- Depending on the unit, recalculate a font size value into pixels if possible.
+
+### `strip-unit`
+`@function strip-unit($number)`
+- Remove the unit of a length.
+
+### `is-light-or-dark`
+`@function is-light-or-dark($color)`
+- Determine if a color brightness is "light" or "dark" by checking lightness contrast against white or black.
+
+### `get-lnp`
+`@function get-lnp($fg-color, $bg-color)`
+- Shortcut function to get Lnp, the non-polar value of Lc (lightness contrast).
 
 # Acknowledgments and resources
 
