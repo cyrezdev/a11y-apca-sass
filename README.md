@@ -51,7 +51,7 @@ Generates an accessible color automatically.
 
 Calculate the accessible color relative to another color, accessibility level ("bronze", "silver", "gold"), use case ("small-body-text", "body-text", "fluent-text", "large-text", "sub-fluent-text", "spot", "non-text"), text font size and weight, using the APCA contrast algorithm.
 
-The returned contrast is the minimum per use case and level. You can increase contrast with "adjust" parameter.
+Note: The returned contrast is the minimum per use case and level. You can increase contrast with "adjust" parameter.
 
 ### Usage
 
