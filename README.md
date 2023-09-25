@@ -56,17 +56,16 @@ Calculate the accessible color relative to another color, accessibility level ("
 ```
 a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
-a11y-color( <code>foreground color</code>, <code>background color</code>, <code>parameters</code> )
 
 ### Parameters
 Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, pink, darkblue, etc.)
 
 Set use case parameters when different from default $fallback-a11y-map:
-- `"level": {string}`: **Accessibility level as defined by APCA-W3 and WCAG 3:**
+- `"level": "{string}"`: **Accessibility level as defined by APCA-W3 and WCAG 3:**
   - Bronze (minimum)
   - Silver
   - Gold (higher).
-- `"content": {string}`<br>
+- `"content": "{string}"`<br>
   **The type of content:**
   - small-body-text
   - body-text
@@ -75,10 +74,10 @@ Set use case parameters when different from default $fallback-a11y-map:
   - sub-fluent-text
   - spot
   - non-text
-- `"edit": {string}`<br>
-**The color to be edited**
-  - "fg" if color to be edited is Text / Icon color (foreground).<br>
-  - "bg" if color to be edited is background color.
+- `"edit": "{string}"`
+  - **The color to be edited**
+    - "fg" if color to be edited is Text / Icon color (foreground).<br>
+    - "bg" if color to be edited is background color.
 - `"size": {number}`<br>
 **Size of the font in rem, em, px (preferred) or unitless (supposed px)**
   - Warning: 'rem' and 'em' suppose the parent font-size to be 16px (the browser’s default root font-size is typically 16px).
