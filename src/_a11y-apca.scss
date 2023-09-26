@@ -331,19 +331,19 @@ $fallback-a11y-map: (
 		$lnp: calc($lnp - $max-reduce);
 	}
 
+	// Gold level: When used for body text, any contrast value less than Lnp 75 must be increased by at least Lnp 15.
+	@if $level == "gold" and $lnp < 75 {
+		@if $content == "body-text" {
+			$lnp: calc($lnp + 15); // Minimum. Use $adjust-contrast to set more (adjust value added to the min + Lnp 15).
+		}
+	}
+
 	// Set the limit if value exceeds compliant value limits (reduce / increase / max).
 	@if $adjust-contrast > 0 {
 		$lnp: calc($lnp + $adjust-contrast);
 		// Set a max Lnp 100 for text content. To be confirmed.
 		@if $lnp > 100 {
 			$lnp: 100;
-		}
-	}
-
-	// Gold level: When used for body text, any contrast value less than Lnp 75 must be increased by at least Lnp 15.
-	@if $level == "gold" and $lnp < 75 {
-		@if $content == "body-text" {
-			$lnp: calc($lnp + 15); // Minimum. Use $adjust-contrast to set more (adjust value added to the min + Lnp 15).
 		}
 	}
 
