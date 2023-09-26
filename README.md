@@ -214,7 +214,7 @@ APCA contrast
 ```scss
 @function apca-contrast($fg-color, $bg-color)
 ```
-- Determine the lightness contrast as an Lc value from Lc 0 to Lc 106 for dark text on a light background, and Lc 0 to Lc -108 for light text on a dark background, using the APCA Contrast Algorithm
+- Determine the lightness contrast as an Lc value from Lc 0 to Lc 106 for dark text on a light background, and Lc 0 to Lc -108 for light text on a dark background, using the APCA Contrast Algorithm.
 
 ### `apca-polarity()`
 APCA Polarity
