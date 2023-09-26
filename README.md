@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-    <b>Sass tools library to generate colors with <a href="https://git.apcacontrast.com/">APCA™</a> color contrast algorithm.</b>
+    <b>Sass tools library to generate colors with <a href="https://git.apcacontrast.com/">APCA™</a> lightness contrast algorithm.</b>
 </p>
 
 # Introduction
