@@ -185,7 +185,8 @@ Calculate the color relative to another color, using the APCA contrast algorithm
 ```scss
 @function apca-color($fg-color, $contrast: 90, $bg-color: $fg-color, $edit: "fg")
 ```
-- Given the Lnp contrast value (Lc non-polar, $contrast: Lnp), returns the accessible color for the foreground (Text / Icon) on the background color<br>
+- Given the Lnp contrast value (Lc non-polar, $contrast: Lnp),
+  returns the accessible color for the foreground (Text / Icon) on the background color<br>
   OR the accessible color for the background relative to the foreground color.
 
 ### `apca-contrast()`
