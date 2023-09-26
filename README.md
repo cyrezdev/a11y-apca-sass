@@ -1,7 +1,21 @@
-# A11y APCA Sass Library
- 
-Sass tools library to generate colors with [APCA™](https://git.apcacontrast.com/) color contrast algorithm.
+<h1 align="center">A11y APCA Sass Library</h1>
 
+<p align="center">
+    <b>Sass tools library to generate accessible colors with <a href="https://git.apcacontrast.com/">APCA™</a> contrast algorithm.</b>
+</p>
+
+<p align="center">
+	<a href="https://github.com/Myndex/apca-w3#version-information"><img alt="APCA-W3 Version" src="https://img.shields.io/badge/APCA_W3-0.1.9_(w3)_(98G4g)_beta-blueviolet"></a>
+	<img alt="WCAG 3.0 Status" src="https://img.shields.io/badge/WCAG_3.0-beta-darkred">
+	<img alt="Dart Sass minimum version" src="https://img.shields.io/badge/Dart_Sass-since_1.33-mediumvioletred">
+	<a href="https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE"><img alt="A11y APCA Sass license" src="https://img.shields.io/badge/License-MIT-blue" /></a>
+	<!--img alt="Downloads" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total"-->
+</p>
+
+<br>
+
+# Introduction
+ 
 ## About a11y-apca-sass Library
 - APCA™ is the candidate contrast method for WCAG 3, and is currently in [public beta](https://github.com/Myndex/apca-w3).
 - This Sass library a11y-apca-sass is in beta for the same reason:
@@ -44,7 +58,7 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 
 <br>
 
-# Get Started
+# Getting Started
 
 Generates an accessible color automatically.
 
