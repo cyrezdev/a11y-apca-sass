@@ -62,7 +62,7 @@ $fallback-a11y-map: (
 ```
 <br>
 
-## Main function `a11y-color()` to generate an accessible color automatically
+## Using `a11y-color()` to generate an accessible color automatically
 
 Calculate the accessible color relative to another color, accessibility level, content use case, text font size and weight, using the APCA contrast algorithm.
 
