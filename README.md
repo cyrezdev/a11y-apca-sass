@@ -44,7 +44,7 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 
 <br>
 
-# Get Started
+# Getting Started
 
 Generates an accessible color automatically.
 
