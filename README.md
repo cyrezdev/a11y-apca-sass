@@ -174,7 +174,7 @@ footer {
 }
 ```
 
-<hr>
+<br>
 
 # Utility Functions
 
@@ -273,6 +273,7 @@ APCA Luminance
 @function get-lnp($fg-color, $bg-color)
 ```
 - Shortcut function to get Lnp, the non-polar value of Lc (lightness contrast).
+<br>
 
 # Acknowledgments and resources
 
