@@ -47,7 +47,7 @@
 @use "sass:meta";
 
 // -----------------------
-// LEXICON
+// GLOSSARY
 // -----------------------
 // bg:      Background
 // fg:      Foreground
@@ -229,6 +229,7 @@ $fallback-a11y-map: (
 	}
 
 	// START - Initialize variables
+	$lookup-table-levels: "silver", "gold";
 
 	// Default preferred absolute Lc contrast (Lnp)
 	$lnp: 90;
@@ -295,7 +296,6 @@ $fallback-a11y-map: (
 		}
 	}
 
-	$lookup-table-levels: "silver", "gold";
 	// Get min Lnp: Bronze level.
 	@if $level == "bronze" {
 		// Max reduce contrast per use case.
