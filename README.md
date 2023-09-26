@@ -28,10 +28,27 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 >Some use-cases are prohibited by license, including the following: use in medical, clinical evaluation,
 >human safety related, aerospace, transportation, automotive, military applications, are strictly
 >prohibited without a specific license in writing granting such use.”
+<br>
 
-<hr>
+## Glossary
 
-# Default Fallback Parameters
+| _Term_ | _Definition_ |
+| :---   | :--- |
+| bg     | Background |
+| fg     | Foreground |
+| Lc     | Lc contrast value [-108,106] |
+| level  | Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher). |
+| Lnp    | Absolute (non-polar) Lc value $L^C_{np}$ |
+| size   | Size of the font in px used without unit.<br> The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Size Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#i---size) |
+| weight | Weight of the font.<br> The reference fonts are Helvetica or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Weight Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#ii---weight) |
+
+<br>
+
+# Get Started
+
+Generates an accessible color automatically.
+
+## Default Fallback Parameters
 
 ```scss
 $fallback-a11y-map: (
@@ -43,21 +60,22 @@ $fallback-a11y-map: (
 	"adjust": 0
 );
 ```
+<br>
 
-# Get Started
+## Main function `a11y-color()` to generate an accessible color automatically
 
-## `a11y-color()`
-Generates an accessible color automatically.
-
-Calculate the accessible color relative to another color, accessibility level ("bronze", "silver", "gold"), use case ("small-body-text", "body-text", "fluent-text", "large-text", "sub-fluent-text", "spot", "non-text"), text font size and weight, using the APCA contrast algorithm.
+Calculate the accessible color relative to another color, accessibility level, content use case, text font size and weight, using the APCA contrast algorithm.
 
 _Note: The returned color uses the minimum contrast per use case and level. You can increase contrast with "adjust" parameter._
+
+<br>
 
 ### Usage
 
 ```html
 a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
+<br>
 
 ### Parameters
 Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, pink, darkblue, etc.)
@@ -92,6 +110,7 @@ Set **use case parameters** when different from default $fallback-a11y-map:
 - `"adjust": {number}`
   - **Positive value to increase lightness contrast.**<br>
     If it exceed limits defined by the a11y level, it will be auto-adjusted.
+<br>
 
 ### Examples
 
