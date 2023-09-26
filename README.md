@@ -5,10 +5,11 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/Myndex/apca-w3#version-information"><img alt="Static Badge" src="https://img.shields.io/badge/APCA_W3-0.1.9_(w3)_(98G4g)_beta-blueviolet"></a>
-    <img alt="Static Badge" src="https://img.shields.io/badge/WCAG_3.0-beta-darkred">
-    <img alt="Static Badge" src="https://img.shields.io/badge/Dart_Sass-since_1.33-mediumvioletred">
-    <a href="https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE"><img alt="A11y APCA Sass license" src="https://img.shields.io/badge/License-MIT-blue" /></a>
+	<a href="https://github.com/Myndex/apca-w3#version-information"><img alt="APCA-W3 Version" src="https://img.shields.io/badge/APCA_W3-0.1.9_(w3)_(98G4g)_beta-blueviolet"></a>
+	<img alt="WCAG 3.0 Status" src="https://img.shields.io/badge/WCAG_3.0-beta-darkred">
+	<img alt="Dart Sass minimum version" src="https://img.shields.io/badge/Dart_Sass-since_1.33-mediumvioletred">
+	<a href="https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE"><img alt="A11y APCA Sass license" src="https://img.shields.io/badge/License-MIT-blue" /></a>
+	<!--img alt="Downloads" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total"-->
 </p>
 
 <br>
