@@ -180,12 +180,12 @@ APCA Font to Contrast table
   @see https://github.com/Myndex/apca-w3/tree/master#font-lookup-table
 
 ### `apca-color()`
-Calculate the accessible color relative to another color, using the APCA contrast algorithm.
+Calculate the color relative to another color, using the APCA contrast algorithm.
 
 ```scss
 @function apca-color($fg-color, $contrast: 90, $bg-color: $fg-color, $edit: "fg")
 ```
-- Return the accessible color for the foreground (Text / Icon) on the background color<br>
+- Given the Lnp contrast value (Lc non-polar, $contrast: Lnp), returns the accessible color for the foreground (Text / Icon) on the background color<br>
   OR the accessible color for the background relative to the foreground color.
 
 ### `apca-contrast()`
