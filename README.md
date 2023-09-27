@@ -53,7 +53,7 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 | Lc     | Lc contrast value [-108,106] |
 | level  | Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher). |
 | Lnp    | Absolute (non-polar) Lc value $L^C_{np}$ |
-| size   | Size of the font in px used without unit.<br> The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Size Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#i---size) |
+| size   | Size of the font in rem, em, px (preferred) or unitless (supposed px).<br> Warning: 'rem' and 'em' suppose the root or parent font-size to be 16px (typically the browser's default font size).<br> The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Size Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#i---size) |
 | weight | Weight of the font.<br> The reference fonts are Helvetica or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Weight Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#ii---weight) |
 
 <br>
