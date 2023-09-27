@@ -63,6 +63,7 @@
   When we will reach a version 1.0.0 ready for standards in production, we will lighter the code.
 
 ## About APCA™ by Myndex Perception Research
+GitHub: https://github.com/Myndex
 Link: https://git.apcacontrast.com/
 - APCA™ is the Accessible Perceptual Contrast Algorithm, a new way to predict contrast for text and non-text content on self illuminated displays.
 - APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
