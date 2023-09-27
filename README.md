@@ -12,6 +12,42 @@
 	<!--img alt="Downloads" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total"-->
 </p>
 
+<details>
+<summary>Table of Contents</summary>
+<br />
+
+- [Introduction](#introduction)
+  - [About a11y-apca-sass Library](#about-a11y-apca-sass-library)
+  - [About APCA™ by Myndex Perception Research](#about-apca-by-myndex-perception-research)
+    - [CURRENT BASE ALGORITHM](#current-base-algorithm)
+    - [DISCLAIMER](#disclaimer)
+  - [Glossary](#glossary)
+- [Getting started](#getting-started)
+  - [Default Fallback Parameters](#default-fallback-parameters)
+  - [Using `a11y-color()` to generate an accessible color automatically](#using-a11y-color-to-generate-an-accessible-color-automatically)
+    - [Usage](#usage)
+    - [Parameters](#parameters)
+    - [Examples](#examples)
+- [Utility Functions](#utility-functions)
+  - [APCA based Functions](#apca-based-functions)
+    - [`a11y-lnp()`](#a11y-lnp)
+    - [`font-to-contrast-table()`](#font-to-contrast-table)
+    - [`apca-color()`](#apca-color)
+    - [`apca-contrast()`](#apca-contrast)
+    - [`apca-polarity()`](#apca-polarity)
+    - [`apca-soft-clamp()`](#apca-soft-clamp)
+    - [`apca-luminance()`](#apca-luminance)
+  - [Helper Functions](#helper-functions)
+    - [`set-a11y-map()`](#set-a11y-map)
+    - [`validate-font-size()`](#validate-font-size)
+    - [`strip-unit()`](#strip-unit)
+    - [`is-light-or-dark()`](#is-light-or-dark)
+    - [`get-lnp()`](#get-lnp)
+- [Acknowledgments and resources](#acknowledgments-and-resources)
+- [License](#license)
+
+</details>
+
 <br>
 
 # Introduction
@@ -26,7 +62,7 @@
   All use cases are to be displayed in Beta process, even if step or code with no effect.
   When we will reach a version 1.0.0 ready for standards in production, we will lighter the code.
 
-## About APCA™ by Myndex Perception Research.
+## About APCA™ by Myndex Perception Research
 Link: https://git.apcacontrast.com/
 - APCA™ is the Accessible Perceptual Contrast Algorithm, a new way to predict contrast for text and non-text content on self illuminated displays.
 - APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
@@ -296,3 +332,7 @@ APCA Luminance
 - APCA-W3: https://github.com/Myndex/apca-w3
 - Implementation of APCA algorithm adapted from [sass-apca](https://github.com/gfellerph/sass-apca) by [Philipp Gfeller](https://github.com/gfellerph).
 - apca-color() function inspired by [J. Hogue](https://github.com/jhogue)’s [automated-a11y-sass](https://github.com/jhogue/automated-a11y-sass), based on WCAG2
+
+# License
+
+MIT
