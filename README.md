@@ -335,4 +335,4 @@ APCA Luminance
 
 # License
 
-MIT
+Code copyright 2023 Cyril Reze. Code released under the MIT License.
