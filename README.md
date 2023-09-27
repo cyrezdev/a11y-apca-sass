@@ -335,4 +335,4 @@ APCA Luminance
 
 # License
 
-Code copyright 2023 Cyril Reze. Code released under the MIT License.
+Code copyright 2023 [Cyril Reze](https://cyrez.dev). Code released under the [MIT License](https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE).
