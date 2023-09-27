@@ -54,7 +54,7 @@
 // Lc:      Lc contrast value [-108,106]
 // level:   Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
 // Lnp:     Absolute (non-polar) Lc value $L^C_{np}$
-// size:    Size of the font in px used without unit.
+// size:    Size of the font in rem, em, px (preferred) or unitless (supposed px).
 //          The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.
 //          For other font-family: @see https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#size-weight
 // weight:  Weight of the font.
