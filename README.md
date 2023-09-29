@@ -26,6 +26,7 @@
   - [Default Fallback Parameters](#default-fallback-parameters)
   - [Using `a11y-color()` to generate an accessible color automatically](#using-a11y-color-to-generate-an-accessible-color-automatically)
     - [Usage](#usage)
+    - [Color value](#color-value)
     - [Parameters](#parameters)
     - [Examples](#examples)
 - [Utility Functions](#utility-functions)
