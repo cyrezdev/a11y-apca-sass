@@ -22,6 +22,10 @@
     - [CURRENT BASE ALGORITHM](#current-base-algorithm)
     - [DISCLAIMER](#disclaimer)
   - [Glossary](#glossary)
+  - [Conformance Levels](#conformance-levels)
+    - [Bronze](#bronze)
+    - [Silver](#silver)
+    - [Gold](#gold)
 - [Getting started](#getting-started)
   - [Default Fallback Parameters](#default-fallback-parameters)
   - [Using `a11y-color()` to generate an accessible color automatically](#using-a11y-color-to-generate-an-accessible-color-automatically)
@@ -96,6 +100,29 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 
 <br>
 
+## Conformance levels
+
+### Bronze
+**Covers primary content text only.**
+
+Bronze is the minimum conformance level. Content that does not meet the requirements of the bronze level fails to conform to ARC.<br>
+[Read more about Bronze level conformance](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=criterion#bronze-level-conformance)
+
+### Silver
+**Covers all text content.**
+
+Silver is a higher conformance level, featuring improved readability and accommodation of user preferences.<br>
+[Read more about Silver level conformance](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=criterion#silver-level-conformance)
+
+### Gold
+**Covers all text content, enhanced.**
+
+Gold is the highest conformance level, featuring the improvements from Silver, but adding tests to ensure consistent presentation, such as regulating font x-height and font weight relative to defined reference fonts.<br>
+[Read more about Gold level conformance](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=criterion#gold-level-conformance)
+
+
+<br>
+
 # Getting Started
 
 Generates an accessible color automatically.
@@ -150,7 +177,7 @@ Set **use case parameters** when different from default $fallback-a11y-map:
   - **Accessibility level as defined by APCA-W3 and WCAG 3:**
     - "bronze" (minimum)
     - "silver"
-    - "gold" (higher).
+    - "gold" (higher)
 - `"content": "{string}"`
   - **The type of content:**
     - "small-body-text"
