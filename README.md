@@ -214,7 +214,7 @@ For example, you want to get the text color for a background color Crimson `#dc1
 As it is your body background color, and you want the same hue for body-text color, you use the short a11y-color version:
 
 ```scss
-a11y-color(#dc143c);
+$color: a11y-color(#dc143c);
 ```
 
 With only one parameter, it uses the color as background, and search for the foreground color with the minimum contrast required (using default fallback parameters, which are level Silver, body-text of font-size 16px and weight 400 (normal)).
@@ -234,7 +234,7 @@ You need then to adjust the background color, or increase the font-size and/or w
 
 Increasing a bit the font-size to 18 px is fixing it:
 ```scss
-a11y-color(#dc143c, #dc143c, ("size": 18px));
+$color: a11y-color(#dc143c, #dc143c, ("size": 18px));
 
 // a11y-color returns #fffafb as foreground color
 // with a Lc contrast of -75.1 on #dc143c background color, for a body text with a font-size of 18px.
