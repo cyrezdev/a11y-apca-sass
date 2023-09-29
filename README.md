@@ -219,7 +219,7 @@ As it is your body background color, and you want the same hue for body-text col
 $color: a11y-color(#dc143c);
 ```
 
-With only one parameter, it uses the color as background, and search for the foreground color with the minimum contrast required (using default fallback parameters, which are level Silver, body-text of font-size 16px and weight 400 (normal)).
+With only one parameter, it uses the color as background, and search for the foreground color with the minimum contrast required (using [default fallback parameters](#default-fallback-parameters), which are level Silver, body-text of font-size 16px and weight 400 (normal)).
 
 In this case, a minimum contrast of Lc 90 (in non-polar mode) is expected for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
 
