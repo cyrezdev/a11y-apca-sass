@@ -223,7 +223,7 @@ With only one parameter, it uses the color as background, and search for the for
 
 In this case, a minimum contrast of Lc 90 (in non-polar mode) is expected for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
 
-When watching Sass, a `@warn` message will be returned:
+When watching Sass, it prints a `@warn` message for you:
 
 ```console
 Warning:
