@@ -206,7 +206,7 @@ Set **use case parameters** when different from default $fallback-a11y-map:
 
 ### Warning messages
 
-A11y APCA Sass provides warning messages to inform you when a color can't be generated with the minimum contrast.
+A11y APCA Sass provides warning messages when an accessible color can't be generated per use case.
 
 For example, you want to get the text color for a background color Crimson `#dc143c` (dark color).
 
@@ -216,22 +216,22 @@ As it is your body background color, and you want the same hue for body-text col
 a11y-color(#dc143c);
 ```
 
-This will use the color as background, and search for the foreground color with the minimum contrast required (using default fallback parameters, which are level Silver, body-text of font-size 16px and weight 400 (normal)).
+With only one parameter, it uses the color as background, and search for the foreground color with the minimum contrast required (using default fallback parameters, which are level Silver, body-text of font-size 16px and weight 400 (normal)).
 
-In this case, a minimum contrast of Lc 90 (in non-polar mode) is required for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
+In this case, a minimum contrast of Lc 90 (in non-polar mode) is expected for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
 
-When watching Sass, a `@warn` message will be returned;
+When watching Sass, a `@warn` message will be returned:
 
 ```
 Warning:
 Background color #dc143c is not dark enough. white is returned as color for the foreground (text / icon), but it does not conform to the desired Lc contrast value.
 ```
 
-The best contrast possible with a background color Crimson `#dc143c` is `Lc -77.6` with `white` as foreground color.
+The best contrast possible with a background color Crimson `#dc143c` is `Lc -77.6` with `white` as foreground color. It fails to conform.
 
 You need then to adjust the background color, or increase the font-size and/or weight.
 
-Increasing a bit font-size fixes it:
+Increasing a bit the font-size to 18 px is fixing it:
 ```
 a11y-color(#dc143c, #dc143c, ("size": 18px));
 
