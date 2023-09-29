@@ -128,8 +128,21 @@ a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
 <br>
 
+### Color value
+
+A string containing a valid CSS color string, including hexadecimal or functional representations.<br>
+For example the color MidnightBlue can be specified as:
+- `MidnightBlue`
+- `#191970`
+- `rgb(25, 25, 112)`
+- `hsl(240, 64%, 27%)`
+
+_Note: a11y-apca-sass does not support opacity yet._
+
+<br>
+
 ### Parameters
-Set at least one color (foreground or background). Use a valid Sass color (eg. #f4f5f3, #234, pink, darkblue, etc.)
+Set at least one color (foreground or background).
 
 Set **use case parameters** when different from default $fallback-a11y-map:
 - `"level": "{string}"`:
