@@ -146,7 +146,7 @@ $fallback-a11y-map: (
 
 Calculate the accessible color relative to another color, accessibility level, content use case, text font size and weight, using the APCA contrast algorithm.
 
-If `a11y-color()` can not generate an accessible color, it returns the best possible color and add a [warning message](#warning-messages) to the console.
+If `a11y-color()` can not generate an accessible color, it returns the best possible color and prints a [warning message](#warning-messages) for the user, along with a stack trace indicating how the current function was called.
 
 _Note: The returned color uses the minimum contrast per use case and level. You can increase contrast with "adjust" parameter._
 
