@@ -32,6 +32,7 @@
     - [Usage](#usage)
     - [Color value](#color-value)
     - [Parameters](#parameters)
+    - [Warning messages](#warning-messages)
     - [Examples](#examples)
 - [Utility Functions](#utility-functions)
   - [APCA based Functions](#apca-based-functions)
