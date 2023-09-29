@@ -213,7 +213,7 @@ For example, you want to get the text color for a background color Crimson `#dc1
 
 As it is your body background color, and you want the same hue for body-text color, you use the short a11y-color version:
 
-```
+```scss
 a11y-color(#dc143c);
 ```
 
@@ -223,7 +223,7 @@ In this case, a minimum contrast of Lc 90 (in non-polar mode) is expected for "S
 
 When watching Sass, a `@warn` message will be returned:
 
-```
+```console
 Warning:
 Background color #dc143c is not dark enough. white is returned as color for the foreground (text / icon), but it does not conform to the desired Lc contrast value.
 ```
@@ -233,7 +233,7 @@ The best contrast possible with a background color Crimson `#dc143c` is `Lc -77.
 You need then to adjust the background color, or increase the font-size and/or weight.
 
 Increasing a bit the font-size to 18 px is fixing it:
-```
+```scss
 a11y-color(#dc143c, #dc143c, ("size": 18px));
 
 // a11y-color returns #fffafb as foreground color
