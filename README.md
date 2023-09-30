@@ -56,9 +56,9 @@
 
 <br>
 
-# Introduction
+## Introduction
  
-## About a11y-apca-sass Library
+### About a11y-apca-sass Library
 - APCA™ is the candidate contrast method for WCAG 3, and is currently in [public beta](https://github.com/Myndex/apca-w3).
 - This Sass library a11y-apca-sass is in beta for the same reason:
   still in development and subject to changes prior to adoption.
@@ -68,7 +68,7 @@
   All use cases are to be displayed in Beta process, even if step or code with no effect.
   When we will reach a version 1.0.0 ready for standards in production, we will lighter the code.
 
-## About APCA™ by Myndex Perception Research
+### About APCA™ by Myndex Perception Research
 GitHub: https://github.com/Myndex<br>
 Link: https://git.apcacontrast.com/
 - APCA™ is the Accessible Perceptual Contrast Algorithm, a new way to predict contrast for text and non-text content on self illuminated displays.
@@ -76,18 +76,18 @@ Link: https://git.apcacontrast.com/
 - APCA™ is a contrast assessment method for predicting the perceived contrast between sRGB colors on a computer monitor. It has been developed as an assessment method for W3 Silver/WCAG3 accessibility standards relating to content for computer displays and mobile devices, with a focus on readability and understandability.
 - WCAG 3 is still in development and subject to changes prior to adoption.
 
-### CURRENT BASE ALGORITHM:
+#### CURRENT BASE ALGORITHM:
 APCA Contrast Prediction Equation 0.0.98G-4g-base-W3<br>
 https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#latex-of-the-apca-w3-base-formula<br>
 
-### DISCLAIMER:
+#### DISCLAIMER:
 >“APCA is a method for predicting text contrast on self-illuminated displays for web-based content.
 >Some use-cases are prohibited by license, including the following: use in medical, clinical evaluation,
 >human safety related, aerospace, transportation, automotive, military applications, are strictly
 >prohibited without a specific license in writing granting such use.”
 <br>
 
-## Glossary
+### Glossary
 
 | _Term_ | _Definition_ |
 | :---   | :--- |
@@ -101,21 +101,21 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 
 <br>
 
-## Conformance levels
+### Conformance levels
 
-### Bronze
+#### Bronze
 **Covers primary content text only.**
 
 Bronze is the minimum conformance level. Content that does not meet the requirements of the bronze level fails to conform to ARC.<br>
 [Read more about Bronze level conformance](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=criterion#bronze-level-conformance)
 
-### Silver
+#### Silver
 **Covers all text content.**
 
 Silver is a higher conformance level, featuring improved readability and accommodation of user preferences.<br>
 [Read more about Silver level conformance](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=criterion#silver-level-conformance)
 
-### Gold
+#### Gold
 **Covers all text content, enhanced.**
 
 Gold is the highest conformance level, featuring the improvements from Silver, but adding tests to ensure consistent presentation, such as regulating font x-height and font weight relative to defined reference fonts.<br>
@@ -124,11 +124,11 @@ Gold is the highest conformance level, featuring the improvements from Silver, b
 
 <br>
 
-# Getting Started
+## Getting Started
 
 Generates an accessible color automatically.
 
-## Default Fallback Parameters
+### Default Fallback Parameters
 
 ```scss
 $fallback-a11y-map: (
@@ -142,7 +142,7 @@ $fallback-a11y-map: (
 ```
 <br>
 
-## Using `a11y-color()` to generate an accessible color automatically
+### Using `a11y-color()` to generate an accessible color automatically
 
 Calculate the accessible color relative to another color, accessibility level, content use case, text font size and weight, using the APCA contrast algorithm.
 
@@ -152,14 +152,14 @@ _Note: The returned color uses the minimum contrast per use case and level. You 
 
 <br>
 
-### Usage
+#### Usage
 
 ```html
 a11y-color( <foreground color>, <background color>, (<parameters map>) )
 ```
 <br>
 
-### Color value
+#### Color value
 
 A string containing a valid CSS color string, including hexadecimal or functional representations.<br>
 For example the color MidnightBlue can be specified as:
@@ -172,7 +172,7 @@ _Note: a11y-apca-sass does not support opacity yet._
 
 <br>
 
-### Parameters
+#### Parameters
 Set at least one color (foreground or background).
 
 Set **use case parameters** when different from default $fallback-a11y-map:
@@ -207,7 +207,7 @@ Set **use case parameters** when different from default $fallback-a11y-map:
     If it exceed limits defined by the a11y level, it will be auto-adjusted.
 <br>
 
-### Warning messages
+#### Warning messages
 
 A11y APCA Sass provides warning messages when an accessible color can't be generated per use case.
 
@@ -243,7 +243,7 @@ $color: a11y-color(#dc143c, #dc143c, ("size": 18px));
 ```
 <br>
 
-### Examples
+#### Examples
 
 Simple use case with default parameters:
 ```scss
@@ -307,11 +307,11 @@ footer {
 
 <br>
 
-# Utility Functions
+## Utility Functions
 
-## APCA based Functions
+### APCA based Functions
 
-### `a11y-lnp()`
+#### `a11y-lnp()`
 Get Lnp (Lc in non-polar mode)
 
 ```scss
@@ -320,7 +320,7 @@ Get Lnp (Lc in non-polar mode)
 ```
 - Method to get the absolute Lc contrast value relatively to the standards of the selected accessibility level.
 
-### `font-to-contrast-table()`
+#### `font-to-contrast-table()`
 APCA Font to Contrast table
 
 ```scss
@@ -329,7 +329,7 @@ APCA Font to Contrast table
 - Return absolute Lc contrast (Lnp) required per Font Lookup Table.<br>
   @see https://github.com/Myndex/apca-w3/tree/master#font-lookup-table
 
-### `apca-color()`
+#### `apca-color()`
 Calculate the color relative to another color, using the APCA contrast algorithm.
 
 ```scss
@@ -339,7 +339,7 @@ Calculate the color relative to another color, using the APCA contrast algorithm
   returns the accessible color for the foreground (Text / Icon) on the background color<br>
   OR the accessible color for the background relative to the foreground color.
 
-### `apca-contrast()`
+#### `apca-contrast()`
 APCA contrast
 
 ```scss
@@ -347,7 +347,7 @@ APCA contrast
 ```
 - Determine the lightness contrast as an Lc value from Lc 0 to Lc 106 for dark text on a light background, and Lc 0 to Lc -108 for light text on a dark background, using the APCA Contrast Algorithm.
 
-### `apca-polarity()`
+#### `apca-polarity()`
 APCA Polarity
 
 ```scss
@@ -356,7 +356,7 @@ APCA Polarity
 - Use Y (luminance) for text and BG, and soft clamp black, return 0 for very close luminances, determine
    polarity, and calculate SAPC raw contrast. Then scale for easy to remember levels.
 
-### `apca-soft-clamp()`
+#### `apca-soft-clamp()`
 APCA Soft Clamp
 
 ```scss
@@ -364,7 +364,7 @@ APCA Soft Clamp
 ```
 - Soft clamps Y (luminance) for either color if it is near black.
 
-### `apca-luminance()`
+#### `apca-luminance()`
 APCA Luminance
 
 ```scss
@@ -373,40 +373,40 @@ APCA Luminance
 - Linearize r, g, or b then apply coefficients and sum then return the resulting luminance
 <br>
 
-## Helper Functions
+### Helper Functions
 
-### `set-a11y-map()`
+#### `set-a11y-map()`
 ```scss
 @function set-a11y-map($map)
 ```
 - Validate the list of specific parameters and merge with default $fallback-a11y-map.
 
-### `validate-font-size()`
+#### `validate-font-size()`
 ```scss
 @function validate-font-size($size)
 ```
 - Depending on the unit, recalculate a font size value into pixels if possible.
 
-### `strip-unit()`
+#### `strip-unit()`
 ```scss
 @function strip-unit($number)
 ```
 - Remove the unit of a length.
 
-### `is-light-or-dark()`
+#### `is-light-or-dark()`
 ```scss
 @function is-light-or-dark($color)
 ```
 - Determine if a color brightness is "light" or "dark" by checking lightness contrast against white or black.
 
-### `get-lnp()`
+#### `get-lnp()`
 ```scss
 @function get-lnp($fg-color, $bg-color)
 ```
 - Shortcut function to get Lnp, the non-polar value of Lc (lightness contrast).
 <br>
 
-# Acknowledgments and resources
+## Acknowledgments and resources
 
 - APCA homepage: https://git.apcacontrast.com/
 - APCA calculator: https://www.myndex.com/APCA/
@@ -414,6 +414,6 @@ APCA Luminance
 - Implementation of APCA algorithm adapted from [sass-apca](https://github.com/gfellerph/sass-apca) by [Philipp Gfeller](https://github.com/gfellerph).
 - apca-color() function inspired by [J. Hogue](https://github.com/jhogue)’s [automated-a11y-sass](https://github.com/jhogue/automated-a11y-sass), based on WCAG2
 
-# License
+## License
 
 Code copyright 2023 [Cyril Reze](https://cyrez.dev). Code released under the [MIT License](https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE).
