@@ -52,7 +52,7 @@
 // bg:      Background
 // fg:      Foreground
 // Lc:      Lc contrast value [-108,106]
-// level:   Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+// level:   Accessibility level as defined by APC-RC: Bronze (minimum), Silver, Gold (higher).
 // Lnp:     Absolute (non-polar) Lc value $L^C_{np}$
 // size:    Size of the font in rem, em, px (preferred) or unitless (supposed px).
 //          The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.
@@ -112,7 +112,7 @@ $fallback-a11y-map: (
 //   - ("level": "silver", "content": "body-text", "size": 16px, "weight": 400, "edit": "fg", "adjust": 0)
 //
 // Available parameters (<key>: <value>) for $params-map:
-//   - "level":    {string}  Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+//   - "level":    {string}  Accessibility level as defined by APC-RC: Bronze (minimum), Silver, Gold (higher).
 //   - "content":  {string}  The type of content: small-body-text, body-text, fluent-text, large-text, sub-fluent-text, spot, non-text.
 //   - "edit":     {string}  "fg" if color to be edited is Text / Icon color (foreground).
 //                           "bg" if color to be edited is background color.
@@ -207,7 +207,7 @@ $fallback-a11y-map: (
 //
 // Method to get the absolute Lc contrast value relatively to the standards of the selected accessibility level.
 //
-// @param    {string}  $level            Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher).
+// @param    {string}  $level            Accessibility level as defined by APC-RC: Bronze (minimum), Silver, Gold (higher).
 // @param    {string}  $content          The type of content: small-body-text, body-text, fluent-text, large-text, sub-fluent-text, spot, non-text.
 // @param    {number}  $size             Size of the font in px used without unit.
 // @param    {number}  $weight           Weight (or boldness) of the font. The weights available depend on the font-family that is currently set.
