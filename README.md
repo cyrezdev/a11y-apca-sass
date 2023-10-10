@@ -60,9 +60,8 @@
 ## Introduction
  
 ### About a11y-apca-sass Library
-- APCA™ is the candidate contrast method for WCAG 3, and is currently in [public beta](https://github.com/Myndex/apca-w3).
-- This Sass library a11y-apca-sass is in beta for the same reason:
-  still in development and subject to changes prior to adoption.
+- A11y-APCA-Sass is an APCA™ based library to generate accessible colors for the web.
+- This Sass library is still in development and subject to changes prior to adoption.
 - The code of the a11y-apca-sass could be simplified (some lines are not needed or redundant).
   This is wanted, to keep the current development clear, detailled and
   easier to stay up-to-date when changes are required or things should be adjusted.
@@ -73,7 +72,7 @@
 GitHub: https://github.com/Myndex<br>
 Link: https://git.apcacontrast.com/
 - APCA™ is the Accessible Perceptual Contrast Algorithm, a new way to predict contrast for text and non-text content on self illuminated displays.
-- APCA™ is the candidate contrast method for WCAG 3, and is currently in public beta.
+- APCA™ is the candidate contrast method for WCAG 3, and is currently in [public beta](https://github.com/Myndex/apca-w3).
 - APCA™ is a contrast assessment method for predicting the perceived contrast between sRGB colors on a computer monitor. It has been developed as an assessment method for W3 Silver/WCAG3 accessibility standards relating to content for computer displays and mobile devices, with a focus on readability and understandability.
 - WCAG 3 is still in development and subject to changes prior to adoption.
 
@@ -95,7 +94,7 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 | bg     | Background |
 | fg     | Foreground |
 | Lc     | Lc contrast value [-108,106] |
-| level  | Accessibility level as defined by APCA-W3 and WCAG 3: Bronze (minimum), Silver, Gold (higher). |
+| level  | Accessibility level as defined by APC-RC: Bronze (minimum), Silver, Gold (higher). |
 | Lnp    | Absolute (non-polar) Lc value $L^C_{np}$ |
 | size   | Size of the font in rem, em, px (preferred) or unitless (supposed px).<br> Warning: 'rem' and 'em' suppose the root or parent font-size to be 16px (typically the browser's default font size).<br> The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Size Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#i---size) |
 | weight | Weight of the font.<br> The reference fonts are Helvetica or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Weight Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#ii---weight) |
