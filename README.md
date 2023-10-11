@@ -37,7 +37,7 @@
     - [Examples](#examples)
 - [Utility Functions](#utility-functions)
   - [APCA based Functions](#apca-based-functions)
-    - [`a11y-lnp()`](#a11y-lnp)
+    - [`get-minimum-absolute-lc()`](#get-minimum-absolute-lc)
     - [`font-to-contrast-table()`](#font-to-contrast-table)
     - [`apca-color()`](#apca-color)
     - [`apca-contrast()`](#apca-contrast)
@@ -49,7 +49,7 @@
     - [`validate-font-size()`](#validate-font-size)
     - [`strip-unit()`](#strip-unit)
     - [`is-light-or-dark()`](#is-light-or-dark)
-    - [`get-lnp()`](#get-lnp)
+    - [`absolute-lc()`](#absolute-lc)
 - [Acknowledgments and resources](#acknowledgments-and-resources)
 - [License](#license)
 
@@ -91,11 +91,11 @@ https://github.com/Myndex/SAPC-APCA/blob/master/documentation/APCA-W3-LaTeX.md#l
 
 | _Term_ | _Definition_ |
 | :---   | :--- |
+| absLc  | Absolute Lc value, abs(Lc) |
 | bg     | Background |
 | fg     | Foreground |
 | Lc     | Lc contrast value [-108,106] |
 | level  | Accessibility level as defined by APC-RC: Bronze (minimum), Silver, Gold (higher). |
-| Lnp    | Absolute (non-polar) Lc value $L^C_{np}$ |
 | size   | Size of the font in rem, em, px (preferred) or unitless (supposed px).<br> Warning: 'rem' and 'em' suppose the root or parent font-size to be 16px (typically the browser's default font size).<br> The reference fonts are Helvetica Neue, Helvetica, Fira Sans, Kanit, or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Size Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#i---size) |
 | weight | Weight of the font.<br> The reference fonts are Helvetica or Arial.<br> For other font-family, visit APCA/ARC Support Resources: [Determine Weight Offset](https://readtech.org/ARC/tests/visual-readability-contrast/?tn=methods#ii---weight) |
 
@@ -221,7 +221,7 @@ $color: a11y-color(#dc143c);
 
 With only one parameter, it uses the color as background, and search for the foreground color with the minimum contrast required (using [default fallback parameters](#default-fallback-parameters), which are level Silver, body-text of font-size 16px and weight 400 (normal)).
 
-In this case, a minimum contrast of Lc 90 (in non-polar mode) is expected for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
+In this case, a minimum contrast of Lc 90 (in absolute value) is expected for "Silver" level ([APCA Font to contrast table](https://github.com/Myndex/apca-w3#font-lookup-table)).
 
 When watching Sass, it prints a `@warn` message for you:
 
@@ -311,8 +311,8 @@ footer {
 
 ### APCA based Functions
 
-#### `a11y-lnp()`
-Get Lnp (Lc in non-polar mode)
+#### `get-minimum-absolute-lc()`
+Get the minimum absolute Lc (absLc) as defined by APC-RC.
 
 ```scss
 @function a11y-lnp($level: "silver", $content: "body-text", $size: 16, $weight: 400,
@@ -326,7 +326,7 @@ APCA Font to Contrast table
 ```scss
 @function font-to-contrast-table($size, $weight)
 ```
-- Return absolute Lc contrast (Lnp) required per Font Lookup Table.<br>
+- Return absolute Lc contrast (absLc) required per Font Lookup Table.<br>
   @see https://github.com/Myndex/apca-w3/tree/master#font-lookup-table
 
 #### `apca-color()`
@@ -335,7 +335,7 @@ Calculate the color relative to another color, using the APCA contrast algorithm
 ```scss
 @function apca-color($fg-color, $contrast: 90, $bg-color: $fg-color, $edit: "fg")
 ```
-- Given the Lnp contrast value (Lc non-polar, $contrast: Lnp),<br>
+- Given the absLc contrast value (absolute Lc, $contrast: absLc),<br>
   returns the accessible color for the foreground (Text / Icon) on the background color<br>
   OR the accessible color for the background relative to the foreground color.
 
@@ -399,11 +399,11 @@ APCA Luminance
 ```
 - Determine if a color brightness is "light" or "dark" by checking lightness contrast against white or black.
 
-#### `get-lnp()`
+#### `absolute-lc()`
 ```scss
-@function get-lnp($fg-color, $bg-color)
+@function absolute-lc($fg-color, $bg-color)
 ```
-- Shortcut function to get Lnp, the non-polar value of Lc (lightness contrast).
+- Shortcut function to get absLc, the absolute value of Lc (lightness contrast).
 <br>
 
 ## Acknowledgments and resources
