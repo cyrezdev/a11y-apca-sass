@@ -225,7 +225,7 @@ $fallback-a11y-map: (
 //
 @function get-minimum-absolute-lc($level: "silver", $content: "body-text", $size: 16, $weight: 400, $bg-color: "", $adjust-contrast: 0) {
 	@if (meta.type-of($bg-color) != "color") {
-		@error "Type Error: get-lc() expects a color for $bg-color but received #{meta.type-of($bg-color)}. Please provide a valid color.";
+		@error "Type Error: get-minimum-absolute-lc() expects a color for $bg-color but received #{meta.type-of($bg-color)}. Please provide a valid color.";
 	}
 
 	// START - Initialize variables
