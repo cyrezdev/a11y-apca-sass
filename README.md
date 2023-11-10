@@ -59,8 +59,6 @@
 
 <br>
 
-![GitHub all releases](https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total)
-
 ## Introduction
  
 ### About a11y-apca-sass Library
