@@ -10,7 +10,7 @@
 	<img alt="Dart Sass minimum version" src="https://img.shields.io/badge/Dart_Sass-since_1.33-mediumvioletred?style=for-the-badge"><br>
 	<img alt="A11y APCA Sass Library version" src="https://img.shields.io/badge/version-0.1.0 beta-darkgreen?style=for-the-badge">
 	<a href="https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE"><img alt="A11y APCA Sass license" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" /></a>
-	<!--img alt="Downloads" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total"-->
+	<img alt="Downloads" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total">
 </p>
 
 <details>
