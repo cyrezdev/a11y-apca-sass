@@ -130,6 +130,8 @@ Gold is the highest conformance level, featuring the improvements from Silver, b
 
 Generates an accessible color automatically.
 
+Download: [A11y APCA Sass v0.1.0-beta](https://github.com/cyrezdev/a11y-apca-sass/releases/download/0.1.0-beta/a11y-apca-sass-0.1.0-beta.zip)
+
 ### Default Fallback Parameters
 
 ```scss
