@@ -11,7 +11,7 @@
 	<img alt="A11y APCA Sass Library version" src="https://img.shields.io/badge/version-0.1.0 beta-darkgreen?style=for-the-badge">
 	<a href="https://github.com/cyrezdev/a11y-apca-sass/blob/main/LICENSE"><img alt="A11y APCA Sass license" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" /></a>
 	<img alt="A11y APCA Sass Library all releases" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total?style=for-the-badge&label=Downloads&color=orange">
-	<img alt="A11y APCA Sass Library all releases" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/total">
+	<img alt="GitHub release (by tag)" src="https://img.shields.io/github/downloads/cyrezdev/a11y-apca-sass/0.1.0-beta/total?style=for-the-badge&label=Downloads%200.1.0&color=orange">
 </p>
 
 <details>
